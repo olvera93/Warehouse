@@ -1,11 +1,15 @@
 package com.olvera.warehouse.dto;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-
-import java.time.LocalDateTime;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PersonDto {
 
     private Long personId;
@@ -26,7 +30,7 @@ public class PersonDto {
     private String mobileNumber;
 
     @Size(max = 10, message = "birthDate length must not be bigger than 10 characters")
-    @NotBlank(message = "birthDate field is required")
-    private String birtDate;
+    @NotEmpty(message = "birthDate field is required")
+    private String birthDate;
 
 }
