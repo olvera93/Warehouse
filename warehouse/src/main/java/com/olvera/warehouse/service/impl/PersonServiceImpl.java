@@ -2,6 +2,8 @@ package com.olvera.warehouse.service.impl;
 
 import com.olvera.warehouse.dto.PersonDto;
 import com.olvera.warehouse.entity.Person;
+import com.olvera.warehouse.exception.PersonAlreadyExistsException;
+import com.olvera.warehouse.exception.ResourceNotFoundException;
 import com.olvera.warehouse.repository.PersonRepository;
 import com.olvera.warehouse.service.IPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,8 @@ public class PersonServiceImpl implements IPersonService {
         Person optionalPerson = personRepository.findByMobileNumber(personDto.getMobileNumber());
 
         if (optionalPerson != null) {
-            throw new RuntimeException("H");
+            throw new PersonAlreadyExistsException("Person already registered with given mobileNumber " + personDto.getMobileNumber());
         }
-
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birthDate = LocalDate.parse(personDto.getBirthDate(), formatter);
@@ -43,6 +44,15 @@ public class PersonServiceImpl implements IPersonService {
         Person savePerson = personRepository.save(optionalPerson);
 
         return personToDto(savePerson);
+    }
+
+    @Override
+    public PersonDto getUserById(Long personId) {
+
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new ResourceNotFoundException("Person", "personId", personId.toString()));
+
+        return personToDto(person);
     }
 
 
