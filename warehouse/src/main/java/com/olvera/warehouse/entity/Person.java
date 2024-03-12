@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "person")
+@Builder
 @ToString
 public class Person {
 
@@ -27,7 +29,7 @@ public class Person {
 
     private String mobileNumber;
 
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
     @CreatedDate
     @Column(updatable = false)
