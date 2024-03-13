@@ -67,7 +67,12 @@ dependencies {
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
 
+    // Navigation
+    implementation(libs.androidx.navigation)
 
+    // Lottie
+    implementation(libs.airbnb.android)
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

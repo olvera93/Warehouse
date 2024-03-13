@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">TheWarehouse</string>
+
+    <!-- Home Screen -->
+    <string name="sign_up">Sign up for TheWarehouse</string>
+    <string name="register_user_email">You can use your email</string>
+    <string name="register_google">Continue with google</string>
+    <string name="sing_in">Log in</string>
+    <string name="have_an_account">Already have an account?</string>
+
 </resources>
