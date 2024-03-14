@@ -2,11 +2,13 @@ package com.olvera.warehouse.service.impl;
 
 import com.olvera.warehouse.dto.PersonDto;
 import com.olvera.warehouse.entity.Person;
+import com.olvera.warehouse.exception.PasswordNotMatchException;
 import com.olvera.warehouse.exception.PersonAlreadyExistsException;
 import com.olvera.warehouse.exception.ResourceNotFoundException;
 import com.olvera.warehouse.repository.PersonRepository;
 import com.olvera.warehouse.service.IPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,15 +33,29 @@ public class PersonServiceImpl implements IPersonService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birthDate = LocalDate.parse(personDto.getBirthDate(), formatter);
 
-         optionalPerson = Person.builder()
+        String password = personDto.getPassword();
+        String matchPassword = personDto.getMatchPassword();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(password);
+        String hashedMatchPassword = passwordEncoder.encode(matchPassword);
+
+        if (!password.equals(matchPassword)) {
+            throw new PasswordNotMatchException("Passwords don't match, please check them");
+        }
+
+        optionalPerson = Person.builder()
                 .personId(personDto.getPersonId())
                 .name(personDto.getName())
                 .lastName(personDto.getLastName())
                 .email(personDto.getEmail())
                 .mobileNumber(personDto.getMobileNumber())
+                .password(hashedPassword)
+                .matchPassword(hashedMatchPassword)
                 .birthDate(birthDate)
                 .createdAt(LocalDateTime.now())
                 .build();
+
+
 
         Person savePerson = personRepository.save(optionalPerson);
 
@@ -66,6 +82,8 @@ public class PersonServiceImpl implements IPersonService {
                 .lastName(person.getLastName())
                 .email(person.getEmail())
                 .mobileNumber(person.getMobileNumber())
+                .password(person.getPassword())
+                .matchPassword(person.getMatchPassword())
                 .birthDate(birthDate.toString())
                 .build();
 

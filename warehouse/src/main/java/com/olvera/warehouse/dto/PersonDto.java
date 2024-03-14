@@ -29,6 +29,14 @@ public class PersonDto {
     @Pattern(regexp = "($|[0-9]{10})", message = "Mobile number must be 10 digits")
     private String mobileNumber;
 
+    @NotEmpty(message = "Password can not be a null or empty")
+    @Size(min = 8, max = 16, message = "Password is 8-16 characters with no space")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){8,16}$", message = "Password is 8-16 characters with at least one digit, one uppercase letter, one lowercase letter, and one special character")
+    private String password;
+
+    @NotEmpty(message = "Match Password can not be a null or empty")
+    private String matchPassword;
+
     @Size(max = 10, message = "birthDate length must not be bigger than 10 characters")
     @NotEmpty(message = "birthDate field is required")
     private String birthDate;

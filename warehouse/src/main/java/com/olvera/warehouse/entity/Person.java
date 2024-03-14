@@ -29,6 +29,10 @@ public class Person {
 
     private String mobileNumber;
 
+    private String password;
+
+    private String matchPassword;
+
     private LocalDate birthDate;
 
     @CreatedDate
