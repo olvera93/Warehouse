@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.daggerAndroid)
     id("kotlin-kapt")
-
+    id("kotlin-parcelize")
 }
 
 android {
@@ -72,6 +72,10 @@ dependencies {
 
     // Lottie
     implementation(libs.airbnb.android)
+
+    // Retrofit
+    implementation(libs.squareup.retrofit2)
+
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
