@@ -23,16 +23,19 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.airbnb.lottie.AsyncUpdates
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.airbnb.lottie.compose.rememberLottieRetrySignal
 import com.olvera.thewarehouse.R
 import com.olvera.thewarehouse.presentation.components.CircleButton
 
 @Composable
-fun HomeView() {
+fun HomeView(
+    navController: NavController
+) {
 
     Box(
         modifier = Modifier
@@ -56,7 +59,9 @@ fun HomeView() {
             CircleButton(
                 icon = Icons.Rounded.Email,
                 text = stringResource(id = R.string.register_user_email)
-            ) {}
+            ) {
+                navController.navigate("SignUp")
+            }
             Spacer(modifier = Modifier.height(20.dp))
             CircleButton(
                 icon = Icons.Rounded.Person,
@@ -96,13 +101,16 @@ fun Loader() {
         progress = { progress },
         modifier = Modifier
             .height(330.dp)
-            .width(300.dp)
+            .width(300.dp),
+        asyncUpdates = AsyncUpdates.AUTOMATIC
     )
 }
 
 
-@Composable
+/*@Composable
 @Preview
 fun HomeViewPreview() {
-    HomeView()
-}
+    HomeView(
+        navController =
+    )
+}*/
