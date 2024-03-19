@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/v1", produces = (MediaType.APPLICATION_JSON_VALUE))
 @Validated
+@CrossOrigin("*")
 public class PersonController {
 
     @Autowired

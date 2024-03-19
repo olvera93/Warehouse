@@ -75,7 +75,6 @@ dependencies {
 
     // Retrofit
     implementation(libs.squareup.retrofit2)
-
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

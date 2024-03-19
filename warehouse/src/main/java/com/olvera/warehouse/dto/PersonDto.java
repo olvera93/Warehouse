@@ -15,11 +15,11 @@ public class PersonDto {
     private Long personId;
 
     @NotEmpty(message = "Name can not be a null or empty")
-    @Size(min = 5, max = 30, message = "The length of the customer name should be between 5 and 30")
+    @Size(min = 3, max = 30, message = "The length of the customer name should be between 5 and 30")
     private String name;
 
     @NotEmpty(message = "LastName can not be a null or empty")
-    @Size(min = 5, max = 30, message = "The length of the customer name should be between 5 and 30")
+    @Size(min = 3, max = 30, message = "The length of the customer name should be between 5 and 30")
     private String lastName;
 
     @NotEmpty(message = "Email address can not be a null or empty")
