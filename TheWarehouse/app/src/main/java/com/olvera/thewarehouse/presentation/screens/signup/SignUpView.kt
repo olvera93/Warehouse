@@ -1,90 +1,242 @@
 package com.olvera.thewarehouse.presentation.screens.signup
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.olvera.thewarehouse.util.Constants.Companion.toPerson
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.olvera.thewarehouse.presentation.components.WareDateTextField
+import com.olvera.thewarehouse.presentation.components.WarePasswordTextField
+import com.olvera.thewarehouse.presentation.components.WareTextField
+import com.olvera.thewarehouse.state.PersonState
+import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun SignUpView(
     signUpViewModel: SignUpViewModel
 ) {
-
     Box(modifier = Modifier.fillMaxSize()) {
         ContentSignUpView(signUpViewModel = signUpViewModel)
     }
-
-    Text(text = "Hello Sign Up")
-    
 }
 
 @Composable
 fun ContentSignUpView(
     signUpViewModel: SignUpViewModel
 ) {
-
     val personState = signUpViewModel.state
+    SignUpForm(personState, signUpViewModel::onEvent, modifier = Modifier.fillMaxWidth())
+}
 
-    Column {
-        TextField(
-            value = personState.name,
-            onValueChange = { newName ->
-                signUpViewModel.state = personState.copy(name = newName)
-            }
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@Composable
+fun SignUpForm(state: PersonState,
+               onEvent: (SignupEvent) -> Unit,
+               modifier: Modifier = Modifier
+) {
+    val focusManager = LocalFocusManager.current
+
+    val pickerState = rememberDatePickerState()
+
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Text(
+            text = "Create your account".uppercase(),
+            modifier = modifier.padding(top = 16.dp),
+            style = MaterialTheme.typography.headlineSmall.copy(
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.tertiary
+            ),
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(32.dp))
+
+        WareTextField(
+            value = state.name,
+            onValueChange = { onEvent(SignupEvent.NameChange(it)) },
+            placeholder = "Name" ,
+            contentDescription = "Enter name",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 6.dp)
+                .padding(horizontal = 20.dp),
+            leadingIcon = Icons.Outlined.Person,
+            keyboardOptions = KeyboardOptions(
+                autoCorrect = false,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(onAny = {
+                focusManager.moveFocus(FocusDirection.Next)
+            }),
+            backgroundColor = Color.White
         )
 
-        TextField(
-            value = personState.lastName,
-            onValueChange = { newName ->
-                signUpViewModel.state = personState.copy(lastName = newName)
-            }
+        WareTextField(
+            value = state.lastName,
+            onValueChange = { onEvent(SignupEvent.LastNameChange(it)) },
+            placeholder = "Last name" ,
+            contentDescription = "Enter last name",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 6.dp)
+                .padding(horizontal = 20.dp),
+            leadingIcon = Icons.Outlined.Person,
+            keyboardOptions = KeyboardOptions(
+                autoCorrect = false,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(onAny = {
+                focusManager.moveFocus(FocusDirection.Next)
+            }),
+            backgroundColor = Color.White
         )
 
-        TextField(
-            value = personState.email,
-            onValueChange = { newName ->
-                signUpViewModel.state = personState.copy(email = newName)
-            }
+        WareTextField(
+            value = state.email,
+            onValueChange = { onEvent(SignupEvent.EmailChange(it)) },
+            placeholder = "Email" ,
+            contentDescription = "Enter email",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 6.dp)
+                .padding(horizontal = 20.dp),
+            leadingIcon = Icons.Outlined.Email,
+            keyboardOptions = KeyboardOptions(
+                autoCorrect = false,
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(onAny = {
+                focusManager.moveFocus(FocusDirection.Next)
+            }),
+            backgroundColor = Color.White
         )
 
-        TextField(
-            value = personState.mobileNumber,
-            onValueChange = { newName ->
-                signUpViewModel.state = personState.copy(mobileNumber = newName)
-            }
+        WareTextField(
+            value = state.mobileNumber,
+            onValueChange = { onEvent(SignupEvent.MobileNumberChange(it)) },
+            placeholder = "Mobile Number" ,
+            contentDescription = "Enter mobile number",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 6.dp)
+                .padding(horizontal = 20.dp),
+            leadingIcon = Icons.Outlined.Phone,
+            keyboardOptions = KeyboardOptions(
+                autoCorrect = false,
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(onAny = {
+                focusManager.moveFocus(FocusDirection.Next)
+            }),
+            backgroundColor = Color.White
         )
 
-        TextField(
-            value = personState.password,
-            onValueChange = { newName ->
-                signUpViewModel.state = personState.copy(password = newName)
-            }
+        WarePasswordTextField(
+            value = state.password,
+            onValueChange = { onEvent(SignupEvent.PasswordChange(it)) },
+            placeholder = "Password" ,
+            contentDescription = "Enter password",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 6.dp)
+                .padding(horizontal = 20.dp),
+            leadingIcon = Icons.Outlined.Lock,
+            keyboardOptions = KeyboardOptions(
+                autoCorrect = false,
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(onAny = {
+                focusManager.moveFocus(FocusDirection.Next)
+            }),
+            backgroundColor = Color.White
         )
 
-        TextField(
-            value = personState.matchPassword,
-            onValueChange = { newName ->
-                signUpViewModel.state = personState.copy(matchPassword = newName)
-            }
+        WarePasswordTextField(
+            value = state.matchPassword,
+            onValueChange = { onEvent(SignupEvent.MatchPasswordChange(it)) },
+            placeholder = "Confirm password" ,
+            contentDescription = "Enter confirm password",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 6.dp)
+                .padding(horizontal = 20.dp),
+            leadingIcon = Icons.Outlined.Lock,
+            keyboardOptions = KeyboardOptions(
+                autoCorrect = false,
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(onAny = {
+                focusManager.moveFocus(FocusDirection.Next)
+            }),
+            backgroundColor = Color.White
         )
 
-        TextField(
-            value = personState.birthDate,
-            onValueChange = { newName ->
-                signUpViewModel.state = personState.copy(birthDate = newName)
-            }
+
+        WareDateTextField(
+            value = state.birthDate,
+            onValueChange = { onEvent(SignupEvent.BirthDateChange(it)) },
+            placeholder = "BirthDate" ,
+            contentDescription = "Enter birtDate",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 6.dp)
+                .padding(horizontal = 20.dp)
+                .clickable {
+
+                }
+            ,
+            leadingIcon = Icons.Outlined.DateRange,
+            keyboardOptions = KeyboardOptions(
+                autoCorrect = false,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(onAny = {
+                focusManager.moveFocus(FocusDirection.Enter)
+            }),
+
+            backgroundColor = Color.White
         )
 
-        Button(onClick = { signUpViewModel.signUp(personState.toPerson()) }) {
-            Text(text = "Save")
+        Button(onClick = { onEvent(SignupEvent.SignUp) }) {
+            Text(text = "Create Account")
         }
     }
-
-
 }
+
+

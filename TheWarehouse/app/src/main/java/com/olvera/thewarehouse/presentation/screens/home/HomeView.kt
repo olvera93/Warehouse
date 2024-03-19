@@ -48,7 +48,7 @@ fun HomeView(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(id = R.string.sign_up),
+                text = stringResource(id = R.string.welcome),
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 32.dp, top = 16.dp)
