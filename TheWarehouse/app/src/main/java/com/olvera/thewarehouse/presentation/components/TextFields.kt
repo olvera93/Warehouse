@@ -39,7 +39,7 @@ fun WareTextField(
     placeholder: String,
     contentDescription: String,
     modifier: Modifier = Modifier,
-    errorMessage: String? = null,
+    message: String? = null,
     leadingIcon: ImageVector? = null,
     isPassword: Boolean = false,
     isDate: Boolean = false,
@@ -68,7 +68,7 @@ fun WareTextField(
                 }
             },
             enabled = isEnabled,
-            isError = errorMessage != null,
+            isError = message != null,
             trailingIcon = {
                 if (isPassword) {
                     TextButton(
@@ -106,9 +106,9 @@ fun WareTextField(
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions
         )
-        if (errorMessage != null) {
+        if (message != null) {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
+            Text(text = message, color = MaterialTheme.colorScheme.error)
         }
     }
 }
@@ -120,7 +120,7 @@ fun WarePasswordTextField(
     contentDescription: String,
     modifier: Modifier = Modifier,
     placeholder: String = "Password",
-    errorMessage: String? = null,
+    message: String? = null,
     leadingIcon: ImageVector? = Icons.Outlined.Lock,
     isEnabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions(),
@@ -132,7 +132,7 @@ fun WarePasswordTextField(
         onValueChange = onValueChange,
         placeholder = placeholder,
         modifier = modifier,
-        errorMessage = errorMessage,
+        message = message,
         leadingIcon = leadingIcon,
         isPassword = true,
         isEnabled = isEnabled,
@@ -150,7 +150,7 @@ fun WareDateTextField(
     contentDescription: String,
     modifier: Modifier = Modifier,
     placeholder: String = "Date",
-    errorMessage: String? = null,
+    message: String? = null,
     leadingIcon: ImageVector? = Icons.Outlined.Lock,
     isEnabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions(),
@@ -162,7 +162,7 @@ fun WareDateTextField(
         onValueChange = onValueChange,
         placeholder = placeholder,
         modifier = modifier,
-        errorMessage = errorMessage,
+        message = message,
         leadingIcon = leadingIcon,
         isDate = true,
         isEnabled = isEnabled,

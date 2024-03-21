@@ -74,19 +74,35 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun signUp() {
+
+        state = state.copy(
+            nameError = null,
+            lastNameError = null,
+            emailError = null
+        )
+
+        if (state.nameError.isNullOrEmpty()) {
+            state = state.copy(
+                nameError = "The name must not empty"
+            )
+        }
+
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    val result = Person(
-                        name = state.name,
-                        lastName = state.lastName,
-                        email = state.email,
-                        mobileNumber = state.mobileNumber,
-                        password = state.password,
-                        matchPassword = state.matchPassword,
-                        birthDate = state.birthDate,
-                    )
-                    personRepository.signUp(result)
+                    if (state.nameError == null) {
+                        val result = Person(
+                            name = state.name,
+                            lastName = state.lastName,
+                            email = state.email,
+                            mobileNumber = state.mobileNumber,
+                            password = state.password,
+                            matchPassword = state.matchPassword,
+                            birthDate = state.birthDate,
+                        )
+                        personRepository.signUp(result)
+                    }
+
                 } catch (e: Exception) {
                     println(e)
                 }
@@ -102,7 +118,7 @@ class SignUpViewModel @Inject constructor(
             mobileNumber = "",
             password = "",
             matchPassword =  "",
-            birthDate = "",
+            birthDate = ""
         )
     }
 

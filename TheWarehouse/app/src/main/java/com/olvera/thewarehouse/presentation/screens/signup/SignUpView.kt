@@ -33,6 +33,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.olvera.thewarehouse.presentation.components.WareDateTextField
 import com.olvera.thewarehouse.presentation.components.WarePasswordTextField
 import com.olvera.thewarehouse.presentation.components.WareTextField
@@ -42,26 +43,22 @@ import java.util.Date
 
 @Composable
 fun SignUpView(
-    signUpViewModel: SignUpViewModel
+    signUpViewModel: SignUpViewModel,
+    navController: NavController
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        ContentSignUpView(signUpViewModel = signUpViewModel)
-    }
-}
 
-@Composable
-fun ContentSignUpView(
-    signUpViewModel: SignUpViewModel
-) {
-    val personState = signUpViewModel.state
-    SignUpForm(personState, signUpViewModel::onEvent, modifier = Modifier.fillMaxWidth())
+    Box(modifier = Modifier.fillMaxSize()) {
+        val personState = signUpViewModel.state
+        SignUpForm(personState, signUpViewModel::onEvent, modifier = Modifier.fillMaxWidth(), navController)
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun SignUpForm(state: PersonState,
                onEvent: (SignupEvent) -> Unit,
-               modifier: Modifier = Modifier
+               modifier: Modifier = Modifier,
+               navController: NavController
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -85,6 +82,7 @@ fun SignUpForm(state: PersonState,
             onValueChange = { onEvent(SignupEvent.NameChange(it)) },
             placeholder = "Name" ,
             contentDescription = "Enter name",
+            message = state.nameError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -106,6 +104,7 @@ fun SignUpForm(state: PersonState,
             onValueChange = { onEvent(SignupEvent.LastNameChange(it)) },
             placeholder = "Last name" ,
             contentDescription = "Enter last name",
+            message = state.lastNameError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -127,6 +126,7 @@ fun SignUpForm(state: PersonState,
             onValueChange = { onEvent(SignupEvent.EmailChange(it)) },
             placeholder = "Email" ,
             contentDescription = "Enter email",
+            message = state.emailError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -148,6 +148,7 @@ fun SignUpForm(state: PersonState,
             onValueChange = { onEvent(SignupEvent.MobileNumberChange(it)) },
             placeholder = "Mobile Number" ,
             contentDescription = "Enter mobile number",
+            message = state.mobileNumberError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -169,6 +170,7 @@ fun SignUpForm(state: PersonState,
             onValueChange = { onEvent(SignupEvent.PasswordChange(it)) },
             placeholder = "Password" ,
             contentDescription = "Enter password",
+            message = state.passwordError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -190,6 +192,7 @@ fun SignUpForm(state: PersonState,
             onValueChange = { onEvent(SignupEvent.MatchPasswordChange(it)) },
             placeholder = "Confirm password" ,
             contentDescription = "Enter confirm password",
+            message = state.matchPasswordError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -212,6 +215,7 @@ fun SignUpForm(state: PersonState,
             onValueChange = { onEvent(SignupEvent.BirthDateChange(it)) },
             placeholder = "BirthDate" ,
             contentDescription = "Enter birtDate",
+            message = state.birthDateError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -235,6 +239,10 @@ fun SignUpForm(state: PersonState,
 
         Button(onClick = { onEvent(SignupEvent.SignUp) }) {
             Text(text = "Create Account")
+            navController.navigate("Store")
+            navController.popBackStack()
+
+
         }
     }
 }

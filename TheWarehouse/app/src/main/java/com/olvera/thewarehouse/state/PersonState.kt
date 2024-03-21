@@ -7,5 +7,12 @@ data class PersonState(
     val mobileNumber: String = "",
     val password: String = "",
     val matchPassword: String = "",
-    val birthDate: String = ""
+    val birthDate: String = "",
+    val nameError: String? = null,
+    val lastNameError: String? = null,
+    val emailError: String? = null,
+    val mobileNumberError: String? = null,
+    val passwordError: String? = null,
+    val matchPasswordError: String? = null,
+    val birthDateError: String? = null
 )

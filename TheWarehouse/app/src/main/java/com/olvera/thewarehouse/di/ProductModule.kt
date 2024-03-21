@@ -1,7 +1,7 @@
 package com.olvera.thewarehouse.di
 
-import com.olvera.thewarehouse.data.remote.PersonApi
-import com.olvera.thewarehouse.util.Constants.Companion.BASE_PERSON_URL
+import com.olvera.thewarehouse.data.remote.StoreApi
+import com.olvera.thewarehouse.util.Constants.Companion.BASE_STORE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,20 +12,19 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object ProductModule {
 
     @Singleton
     @Provides
-    fun providesPersonRetrofit(): Retrofit {
+    fun providesProductRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_PERSON_URL)
+            .baseUrl(BASE_STORE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
     @Singleton
     @Provides
-    fun providesPesonApi(retrofit: Retrofit): PersonApi = retrofit.create(PersonApi::class.java)
-
+    fun providesStoreApi(retrofit: Retrofit): StoreApi = retrofit.create(StoreApi::class.java)
 
 }

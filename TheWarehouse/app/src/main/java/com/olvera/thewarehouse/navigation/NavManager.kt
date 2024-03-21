@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.olvera.thewarehouse.presentation.screens.home.HomeView
 import com.olvera.thewarehouse.presentation.screens.signup.SignUpView
 import com.olvera.thewarehouse.presentation.screens.signup.SignUpViewModel
+import com.olvera.thewarehouse.presentation.screens.store.StoreView
 
 @Composable
 fun NavManager(
@@ -21,7 +22,11 @@ fun NavManager(
         }
 
         composable("SignUp") {
-            SignUpView(signUpViewModel)
+            SignUpView(signUpViewModel, navController)
+        }
+
+        composable("Store") {
+            StoreView()
         }
 
     }
