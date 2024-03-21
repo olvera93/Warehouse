@@ -2,6 +2,7 @@ package com.olvera.warehouse.service.impl;
 
 import com.olvera.warehouse.dto.PersonDto;
 import com.olvera.warehouse.entity.Person;
+import com.olvera.warehouse.exception.BadBirthDateException;
 import com.olvera.warehouse.exception.PasswordNotMatchException;
 import com.olvera.warehouse.exception.PersonAlreadyExistsException;
 import com.olvera.warehouse.exception.ResourceNotFoundException;
@@ -30,8 +31,20 @@ public class PersonServiceImpl implements IPersonService {
             throw new PersonAlreadyExistsException("Person already registered with given mobileNumber " + personDto.getMobileNumber());
         }
 
+        optionalPerson = personRepository.findByEmail(personDto.getEmail());
+
+        if (optionalPerson != null) {
+            throw new PersonAlreadyExistsException("Person already registered with given email " + personDto.getEmail());
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birthDate = LocalDate.parse(personDto.getBirthDate(), formatter);
+        LocalDate futureAge = LocalDate.now();
+
+        if (birthDate.isAfter(futureAge)) {
+            throw new BadBirthDateException("The user cannot have a future age");
+        }
+
 
         String password = personDto.getPassword();
         String matchPassword = personDto.getMatchPassword();
