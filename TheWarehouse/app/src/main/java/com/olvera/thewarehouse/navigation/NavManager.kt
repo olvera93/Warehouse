@@ -8,10 +8,13 @@ import com.olvera.thewarehouse.presentation.screens.home.HomeView
 import com.olvera.thewarehouse.presentation.screens.signup.SignUpView
 import com.olvera.thewarehouse.presentation.screens.signup.SignUpViewModel
 import com.olvera.thewarehouse.presentation.screens.store.StoreView
+import com.olvera.thewarehouse.presentation.screens.store.StoreViewModel
 
 @Composable
 fun NavManager(
-    signUpViewModel: SignUpViewModel
+    signUpViewModel: SignUpViewModel,
+    storeViewModel: StoreViewModel
+
 ) {
 
     val navController = rememberNavController()
@@ -26,7 +29,7 @@ fun NavManager(
         }
 
         composable("Store") {
-            StoreView()
+            StoreView(storeViewModel)
         }
 
     }

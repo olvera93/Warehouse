@@ -25,7 +25,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providesPesonApi(retrofit: Retrofit): PersonApi = retrofit.create(PersonApi::class.java)
+    fun providesPersonApi(retrofit: Retrofit): PersonApi = retrofit.create(PersonApi::class.java)
 
 
 }

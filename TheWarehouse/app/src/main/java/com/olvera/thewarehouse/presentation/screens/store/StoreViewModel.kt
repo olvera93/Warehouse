@@ -28,10 +28,6 @@ class StoreViewModel @Inject constructor(
     var state by mutableStateOf(ProductState())
         private set
 
-    init {
-        fetchProducts()
-    }
-
     private fun fetchProducts() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
