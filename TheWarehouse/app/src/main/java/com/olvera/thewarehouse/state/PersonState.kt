@@ -15,10 +15,4 @@ data class PersonState(
     val passwordError: String? = null,
     val matchPasswordError: String? = null,
     val birthDateError: String? = null,
-    val timestamp: String? = "",
-    val status: Int = 0,
-    val error: String? = "",
-    val trace: String? = "",
-    val message: String? = "",
-    val path: String? = ""
 )
