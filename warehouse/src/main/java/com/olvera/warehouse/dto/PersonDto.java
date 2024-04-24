@@ -1,5 +1,6 @@
 package com.olvera.warehouse.dto;
 
+import com.olvera.warehouse.entity.Role;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,5 +41,9 @@ public class PersonDto {
     @Size(max = 10, message = "birthDate length must not be bigger than 10 characters")
     @NotEmpty(message = "birthDate field is required")
     private String birthDate;
+
+    private Role role;
+
+    private String token;
 
 }

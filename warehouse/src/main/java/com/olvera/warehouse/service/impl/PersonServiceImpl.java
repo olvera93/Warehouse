@@ -1,5 +1,7 @@
 package com.olvera.warehouse.service.impl;
 
+
+import com.olvera.warehouse.dto.LoginDto;
 import com.olvera.warehouse.dto.PersonDto;
 import com.olvera.warehouse.entity.Person;
 import com.olvera.warehouse.exception.BadBirthDateException;
@@ -7,8 +9,13 @@ import com.olvera.warehouse.exception.PasswordNotMatchException;
 import com.olvera.warehouse.exception.PersonAlreadyExistsException;
 import com.olvera.warehouse.exception.ResourceNotFoundException;
 import com.olvera.warehouse.repository.PersonRepository;
-import com.olvera.warehouse.service.IPersonService;
+import com.olvera.warehouse.service.IJwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +24,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
-public class PersonServiceImpl implements IPersonService {
+public class PersonServiceImpl implements UserDetailsService {
 
     @Autowired
     private PersonRepository personRepository;
 
-    @Override
+    @Autowired
+    private IJwtService jwtService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     public PersonDto createUser(PersonDto personDto) {
 
         Person optionalPerson = personRepository.findByMobileNumber(personDto.getMobileNumber());
@@ -45,7 +57,6 @@ public class PersonServiceImpl implements IPersonService {
             throw new BadBirthDateException("The user cannot have a future age");
         }
 
-
         String password = personDto.getPassword();
         String matchPassword = personDto.getMatchPassword();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -66,22 +77,61 @@ public class PersonServiceImpl implements IPersonService {
                 .matchPassword(hashedMatchPassword)
                 .birthDate(birthDate)
                 .createdAt(LocalDateTime.now())
+                .role(personDto.getRole())
                 .build();
-
-
 
         Person savePerson = personRepository.save(optionalPerson);
 
-        return personToDto(savePerson);
+        String token = jwtService.generateToken(savePerson);
+        personDto.setToken(token);
+        return PersonDto.builder()
+                .personId(savePerson.getPersonId())
+                .name(savePerson.getName())
+                .lastName(savePerson.getLastName())
+                .email(savePerson.getEmail())
+                .mobileNumber(savePerson.getMobileNumber())
+                .password(savePerson.getPassword())
+                .matchPassword(savePerson.getMatchPassword())
+                .birthDate(birthDate.toString())
+                .role(savePerson.getRole())
+                .token(token)
+                .build();
     }
 
-    @Override
+
+
     public PersonDto getUserById(Long personId) {
 
         Person person = personRepository.findById(personId)
                 .orElseThrow(() -> new ResourceNotFoundException("Person", "personId", personId.toString()));
 
         return personToDto(person);
+    }
+
+    public PersonDto authenticate(LoginDto personDto) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        personDto.getName(),
+                        personDto.getPassword()
+                )
+        );
+
+        Person person = personRepository.findByName(personDto.getName()).orElseThrow();
+        String token = jwtService.generateToken(person);
+        personDto.setToken(token);
+
+        return PersonDto.builder()
+                .personId(person.getPersonId())
+                .name(person.getName())
+                .lastName(person.getLastName())
+                .email(person.getEmail())
+                .mobileNumber(person.getMobileNumber())
+                .password(person.getPassword())
+                .matchPassword(person.getMatchPassword())
+                .birthDate(person.getBirthDate().toString())
+                .role(person.getRole())
+                .token(token)
+                .build();
     }
 
 
@@ -98,8 +148,14 @@ public class PersonServiceImpl implements IPersonService {
                 .password(person.getPassword())
                 .matchPassword(person.getMatchPassword())
                 .birthDate(birthDate.toString())
+                .role(person.getRole())
                 .build();
 
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return personRepository.findByName(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
 }
