@@ -1,7 +1,8 @@
 package com.olvera.warehouse.controller;
 
+import com.olvera.warehouse.dto.LoginDto;
 import com.olvera.warehouse.dto.PersonDto;
-import com.olvera.warehouse.service.IPersonService;
+import com.olvera.warehouse.service.impl.PersonServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class PersonController {
 
     @Autowired
-    private IPersonService personService;
+    private PersonServiceImpl personService;
 
 
     @PostMapping("/signUp")
@@ -25,6 +26,12 @@ public class PersonController {
 
         PersonDto response = personService.createUser(personDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/signIn")
+    public ResponseEntity<PersonDto> login(@Valid @RequestBody LoginDto loginDto) {
+        PersonDto response = personService.authenticate(loginDto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/fetch/{personId}")

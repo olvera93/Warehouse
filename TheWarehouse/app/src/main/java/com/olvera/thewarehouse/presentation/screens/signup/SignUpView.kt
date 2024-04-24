@@ -1,5 +1,6 @@
 package com.olvera.thewarehouse.presentation.screens.signup
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,50 +23,57 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.olvera.thewarehouse.R
 import com.olvera.thewarehouse.presentation.components.WareDateTextField
 import com.olvera.thewarehouse.presentation.components.WarePasswordTextField
 import com.olvera.thewarehouse.presentation.components.WareTextField
 import com.olvera.thewarehouse.state.PersonState
-import java.util.Calendar
-import java.util.Date
+
 
 @Composable
 fun SignUpView(
-    signUpViewModel: SignUpViewModel
+    signUpViewModel: SignUpViewModel,
+    navController: NavController
 ) {
+
     Box(modifier = Modifier.fillMaxSize()) {
-        ContentSignUpView(signUpViewModel = signUpViewModel)
+        val personState = signUpViewModel.state
+        SignUpForm(
+            personState,
+            signUpViewModel::onEvent,
+            modifier = Modifier.fillMaxWidth(),
+            navController
+        )
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ContentSignUpView(
-    signUpViewModel: SignUpViewModel
-) {
-    val personState = signUpViewModel.state
-    SignUpForm(personState, signUpViewModel::onEvent, modifier = Modifier.fillMaxWidth())
-}
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
-@Composable
-fun SignUpForm(state: PersonState,
-               onEvent: (SignupEvent) -> Unit,
-               modifier: Modifier = Modifier
+fun SignUpForm(
+    state: PersonState,
+    onEvent: (SignupEvent) -> Unit,
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     val focusManager = LocalFocusManager.current
-
-    val pickerState = rememberDatePickerState()
+    val context = LocalContext.current
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -82,9 +90,12 @@ fun SignUpForm(state: PersonState,
 
         WareTextField(
             value = state.name,
-            onValueChange = { onEvent(SignupEvent.NameChange(it)) },
-            placeholder = "Name" ,
+            onValueChange = {
+                onEvent(SignupEvent.NameChange(it))
+            },
+            placeholder = "Name",
             contentDescription = "Enter name",
+            message = state.nameError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -103,9 +114,12 @@ fun SignUpForm(state: PersonState,
 
         WareTextField(
             value = state.lastName,
-            onValueChange = { onEvent(SignupEvent.LastNameChange(it)) },
-            placeholder = "Last name" ,
+            onValueChange = {
+                onEvent(SignupEvent.LastNameChange(it))
+            },
+            placeholder = "Last name",
             contentDescription = "Enter last name",
+            message = state.lastNameError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -125,8 +139,9 @@ fun SignUpForm(state: PersonState,
         WareTextField(
             value = state.email,
             onValueChange = { onEvent(SignupEvent.EmailChange(it)) },
-            placeholder = "Email" ,
+            placeholder = "Email",
             contentDescription = "Enter email",
+            message = state.emailError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -146,8 +161,9 @@ fun SignUpForm(state: PersonState,
         WareTextField(
             value = state.mobileNumber,
             onValueChange = { onEvent(SignupEvent.MobileNumberChange(it)) },
-            placeholder = "Mobile Number" ,
+            placeholder = "Mobile Number",
             contentDescription = "Enter mobile number",
+            message = state.mobileNumberError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -167,8 +183,9 @@ fun SignUpForm(state: PersonState,
         WarePasswordTextField(
             value = state.password,
             onValueChange = { onEvent(SignupEvent.PasswordChange(it)) },
-            placeholder = "Password" ,
+            placeholder = "Password",
             contentDescription = "Enter password",
+            message = state.passwordError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -188,8 +205,9 @@ fun SignUpForm(state: PersonState,
         WarePasswordTextField(
             value = state.matchPassword,
             onValueChange = { onEvent(SignupEvent.MatchPasswordChange(it)) },
-            placeholder = "Confirm password" ,
+            placeholder = "Confirm password",
             contentDescription = "Enter confirm password",
+            message = state.matchPasswordError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
@@ -210,16 +228,16 @@ fun SignUpForm(state: PersonState,
         WareDateTextField(
             value = state.birthDate,
             onValueChange = { onEvent(SignupEvent.BirthDateChange(it)) },
-            placeholder = "BirthDate" ,
+            placeholder = "BirthDate",
             contentDescription = "Enter birtDate",
+            message = state.birthDateError,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 6.dp)
                 .padding(horizontal = 20.dp)
                 .clickable {
 
-                }
-            ,
+                },
             leadingIcon = Icons.Outlined.DateRange,
             keyboardOptions = KeyboardOptions(
                 autoCorrect = false,
@@ -233,10 +251,35 @@ fun SignUpForm(state: PersonState,
             backgroundColor = Color.White
         )
 
-        Button(onClick = { onEvent(SignupEvent.SignUp) }) {
-            Text(text = "Create Account")
+        if (areAllFieldsFilled(state)){
+            onEvent(SignupEvent.SignUp)
+            Button(onClick = {
+                //if (areAllFieldsFilled(state)) {
+                navController.popBackStack()
+
+                navController.navigate("Store")
+                //}
+            }) {
+                Text(text = "Create Account")
+            }
         }
+
+
+
     }
+
 }
+
+private fun areAllFieldsFilled(state: PersonState): Boolean {
+    return state.name.isNotEmpty() &&
+            state.lastName.isNotEmpty() &&
+            state.email.isNotEmpty() &&
+            state.mobileNumber.isNotEmpty() &&
+            state.password.isNotEmpty() &&
+            state.matchPassword.isNotEmpty() &&
+            state.birthDate.isNotEmpty()
+}
+
+
 
 
