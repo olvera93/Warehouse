@@ -1,60 +1,43 @@
-package com.olvera.warehouse.entity;
+package com.olvera.warehouse.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "person")
-@Builder
-@ToString
-public class Person implements UserDetails {
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long personId;
+    Integer userId;
 
-    private String name;
+    @Column(nullable = false)
+    String username;
 
-    private String lastName;
+    String lastname;
 
-    private String email;
+    String firstname;
 
-    private String mobileNumber;
+    String country;
 
-    private String password;
+    String password;
 
-    private String matchPassword;
-
-    private LocalDate birthDate;
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
+    @Enumerated(EnumType.STRING)
+    Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
     }
 
     @Override
