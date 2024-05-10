@@ -28,6 +28,10 @@ public class User implements UserDetails {
 
     String firstname;
 
+    String email;
+
+    String mobileNumber;
+
     String country;
 
     String password;

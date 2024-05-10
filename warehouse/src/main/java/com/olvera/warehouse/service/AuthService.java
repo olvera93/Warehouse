@@ -1,5 +1,8 @@
 package com.olvera.warehouse.service;
 
+import com.olvera.warehouse.dto.AuthResponse;
+import com.olvera.warehouse.dto.LoginRequest;
+import com.olvera.warehouse.dto.RegisterRequest;
 import com.olvera.warehouse.jwt.JwtService;
 import com.olvera.warehouse.model.*;
 import com.olvera.warehouse.repository.UserRepository;
@@ -36,6 +39,8 @@ public class AuthService {
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .country(request.getCountry())
+                .email(request.getEmail())
+                .mobileNumber(request.getMobileNumber())
                 .role(Role.USER)
                 .build();
 

@@ -1,4 +1,4 @@
-package com.olvera.warehouse.model;
+package com.olvera.warehouse.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
