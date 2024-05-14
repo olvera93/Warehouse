@@ -4,7 +4,7 @@ data class ProductModel(
     val results: List<ProductList>,
     val total: Int? = null,
     val skip: Int? = null,
-    val limit: Int? = null
+    val limit: Int?= null
 )
 
 data class ProductList(

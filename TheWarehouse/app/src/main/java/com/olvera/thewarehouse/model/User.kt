@@ -4,12 +4,13 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Person(
-    val name: String,
-    val lastName: String,
+data class User(
+    val username: String,
+    val password: String,
+    val firstname: String,
+    val lastname: String,
     val email: String,
     val mobileNumber: String,
-    val password: String,
-    val matchPassword: String,
-    val birthDate: String
+    val country: String
+
 ): Parcelable

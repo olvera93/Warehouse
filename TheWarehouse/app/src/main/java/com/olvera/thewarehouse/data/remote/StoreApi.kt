@@ -10,5 +10,4 @@ interface StoreApi {
 
     @GET(BASE_STORE_URL + ENDPOINT_PRODUCTS)
     suspend fun getAllProducts(): Response<ProductModel>
-
 }
