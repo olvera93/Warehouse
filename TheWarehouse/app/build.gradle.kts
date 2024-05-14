@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.daggerAndroid)
     id("kotlin-kapt")
     id("kotlin-parcelize")
@@ -63,7 +63,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    //Hilt
+    // Hilt
     implementation(libs.google.dagger.hilt.android)
     kapt(libs.google.dagger.hilt.compiler)
 
@@ -75,7 +75,14 @@ dependencies {
 
     // Retrofit
     implementation(libs.squareup.retrofit2)
-    
+
+    // Paging
+    implementation(libs.google.accompanist)
+
+    // Splash Screen
+    implementation(libs.core.splashscreen)
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

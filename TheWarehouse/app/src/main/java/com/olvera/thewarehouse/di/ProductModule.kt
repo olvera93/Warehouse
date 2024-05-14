@@ -11,23 +11,23 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object ProductModule {
 
     @Singleton
     @Provides
-    fun providesStoreApi(@Named("storeApi") retrofit: Retrofit): StoreApi = retrofit.create(StoreApi::class.java)
+    fun provideStoreApi(@Named("storeApi") retrofit: Retrofit): StoreApi =
+        retrofit.create(StoreApi::class.java)
 
-
-    @Singleton
     @Provides
+    @Singleton
     @Named("storeApi")
-    fun providesStoreRetrofit(): Retrofit {
+    fun provideStoreApiRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_STORE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
 }

@@ -1,25 +1,3 @@
 <resources>
     <string name="app_name">TheWarehouse</string>
-
-    <!-- Home Screen -->
-    <string name="welcome">Welcome to The Warehouse</string>
-    <string name="register_user_email">You can use your email</string>
-    <string name="register_google">Continue with google</string>
-    <string name="sing_in">Log in</string>
-    <string name="have_an_account">Already have an account?</string>
-
-    <!-- SignUp Screen -->
-
-    <!-- Errors messages -->
-    <string name="name_error">Name can not be a null or empty</string>
-    <string name="last_name_error">LastName can not be a null or empty</string>
-    <string name="email_error">Email can not be a null or empty</string>
-    <string name="mobile_number_error">Mobile number can not be a null or empty</string>
-    <string name="password_error">Password can not be a null or empty</string>
-    <string name="match_password_error">Match password can not be a null or empty</string>
-    <string name="birthdate_error">Birthdate can not be a null or empty</string>
-    <string name="email_valid">Email address should be a valid value</string>
-
-
-
 </resources>
