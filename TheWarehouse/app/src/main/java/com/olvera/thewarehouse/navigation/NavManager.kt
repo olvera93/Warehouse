@@ -9,6 +9,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.olvera.thewarehouse.MainActivity
 import com.olvera.thewarehouse.presentation.home.HomeView
 import com.olvera.thewarehouse.presentation.onboarding.OnBoardingView
+import com.olvera.thewarehouse.presentation.signup.SignUpView
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -29,8 +30,13 @@ fun NavManager(context: Context, onboardingCompleted: Boolean) {
         }
 
         composable("Home") {
-            HomeView()
+            HomeView(navController = navController)
         }
+
+        composable("SignUp") {
+            SignUpView()
+        }
+
     }
 
 }
