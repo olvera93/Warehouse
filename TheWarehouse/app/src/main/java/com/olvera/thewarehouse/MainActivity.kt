@@ -33,7 +33,6 @@ class MainActivity : ComponentActivity() {
                 !viewModel.isReady.value
             }
         }
-        enableEdgeToEdge()
         setContent {
             TheWarehouseTheme {
                 Surface(
