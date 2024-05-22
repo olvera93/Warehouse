@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -76,6 +77,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
 
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+
+    }
+
+    @ExceptionHandler(ResourceAlreadyExist.class)
+    public ResponseEntity<ErrorResponse> handleResourceAlreadyExistException(ResourceAlreadyExist exception,
+                                                                         WebRequest webRequest) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                webRequest.getDescription(false),
+                HttpStatus.CONFLICT,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
 
     }
 

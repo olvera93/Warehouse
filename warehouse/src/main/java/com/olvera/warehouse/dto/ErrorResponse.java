@@ -3,6 +3,7 @@ package com.olvera.warehouse.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 )
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ErrorResponse {
 
     @Schema(description = "API path invoked by client")
@@ -26,4 +28,5 @@ public class ErrorResponse {
 
     @Schema(description = "Time representing when the error happened")
     private LocalDateTime errorTime;
+
 }
