@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.olvera.thewarehouse.navigation.NavManager
+import com.olvera.thewarehouse.presentation.product.ProductsViewModel
 import com.olvera.thewarehouse.ui.theme.TheWarehouseTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
+    private val productViewModel: ProductsViewModel by viewModels()
     var onboardingCompleted by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +41,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavManager(context = this, onboardingCompleted = onboardingCompleted)
+                    NavManager(
+                        context = this,
+                        onboardingCompleted = onboardingCompleted,
+                        productsViewModel = productViewModel
+                    )
                 }
             }
         }
