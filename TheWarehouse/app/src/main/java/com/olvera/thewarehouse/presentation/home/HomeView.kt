@@ -109,10 +109,11 @@ fun HomeView(
                     .fillMaxWidth()
                     .padding(top = 32.dp, bottom = 64.dp)
                     .padding(horizontal = 20.dp),
-                onClick = { /*TODO*/ }) {
-
+                onClick = {
+                    navController.popBackStack()
+                    navController.navigate("ProductsView")
+                }) {
                 Text(text = "Login")
-
             }
 
             Text(text = "Forgot your password?")
