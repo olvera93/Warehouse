@@ -8,6 +8,7 @@ class Constants {
 
         const val BASE_STORE_URL = "https://dummyjson.com/"
         const val ENDPOINT_PRODUCTS = "products"
+        const val ENDPOINT_CATEGORIES = "categories"
     }
 
 }

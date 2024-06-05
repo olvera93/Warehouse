@@ -79,6 +79,13 @@ public class UserService {
             user.setLastname(newLastname);
         }
 
+        propertyToUpdate = "email";
+        if (updates.containsKey(propertyToUpdate) && updates.get(propertyToUpdate) != null) {
+            String newEmail = updates.get(propertyToUpdate).toString();
+
+
+        }
+
         User userReturned = userRepository.save(user);
 
         return UserResponse.builder()
