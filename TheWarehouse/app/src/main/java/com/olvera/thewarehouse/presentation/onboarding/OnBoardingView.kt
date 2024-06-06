@@ -40,7 +40,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
-import com.olvera.thewarehouse.MainActivity
 import com.olvera.thewarehouse.R
 import kotlinx.coroutines.launch
 

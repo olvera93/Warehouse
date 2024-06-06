@@ -14,6 +14,7 @@ lottie = "6.4.0"
 retrofit = "2.9.0"
 accompanist-pager = "0.12.0"
 core-splashscreen = "1.0.1"
+coil = "2.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -37,6 +38,7 @@ airbnb-android = { group = "com.airbnb.android", name = "lottie-compose", versio
 squareup-retrofit2 = { group = "com.squareup.retrofit2", name =  "converter-gson", version.ref = "retrofit"}
 google-accompanist = { group = "com.google.accompanist", name =  "accompanist-pager", version.ref = "accompanist-pager"}
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref= "core-splashscreen" }
+coil-kl = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
 
 [plugins]

@@ -52,3 +52,9 @@ data class Meta(
     val barcode: String? = null,
     val qrCode: String? = null
 )
+
+data class CategoryModel(
+    val slug: String,
+    val name: String,
+    val url: String,
+)
