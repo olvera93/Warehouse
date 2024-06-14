@@ -27,8 +27,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
@@ -156,4 +158,11 @@ fun Loader() {
             .height(330.dp)
             .width(300.dp)
     )
+}
+
+@Preview()
+@Composable
+fun HomeViewPreview() {
+    val navController = rememberNavController()
+    HomeView(navController = navController)
 }
