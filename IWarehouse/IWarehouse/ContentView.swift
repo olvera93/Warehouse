@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var value: String = ""
+
     var body: some View {
         OnBoardView()
     }

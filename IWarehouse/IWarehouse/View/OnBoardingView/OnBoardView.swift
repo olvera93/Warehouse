@@ -11,7 +11,9 @@ import Lottie
 struct OnBoardView: View {
     @State private var currentPage = 0
     @State private var navigateToNextView = false
-
+    @State private var value: String = ""
+    
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -29,10 +31,8 @@ struct OnBoardView: View {
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
                 
                 if currentPage == 2 {
-                    NavigationLink(
-                        destination: HomeView(),
-                        isActive: $navigateToNextView,
-                        label: {
+                    NavigationStack {
+                        NavigationLink(destination: HomeView(value: value)) {
                             Button(action: {
                                 navigateToNextView = true
                             }) {
@@ -43,7 +43,7 @@ struct OnBoardView: View {
                             }
                             .padding(.top, 20)
                         }
-                    )
+                    }.navigationDestination(isPresented: $navigateToNextView, destination: {HomeView(value: value)})
                 }
             }
         }

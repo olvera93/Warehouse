@@ -17,6 +17,7 @@
 		286ECEDD2C1BCC6D00D9F7FC /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286ECEDC2C1BCC6D00D9F7FC /* HomeView.swift */; };
 		286ECEE02C1BCCA000D9F7FC /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286ECEDF2C1BCCA000D9F7FC /* LottieView.swift */; };
 		286ECEE22C1BCE9900D9F7FC /* WareTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286ECEE12C1BCE9900D9F7FC /* WareTextField.swift */; };
+		28BA41A72C1FC3CC006D24B0 /* ProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA41A62C1FC3CC006D24B0 /* ProductView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		286ECEDC2C1BCC6D00D9F7FC /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		286ECEDF2C1BCCA000D9F7FC /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		286ECEE12C1BCE9900D9F7FC /* WareTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WareTextField.swift; sourceTree = "<group>"; };
+		28BA41A62C1FC3CC006D24B0 /* ProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 		286ECED92C1BC9CE00D9F7FC /* View */ = {
 			isa = PBXGroup;
 			children = (
+				28BA41A52C1FC3B9006D24B0 /* ProductView */,
 				286ECEDB2C1BCC5E00D9F7FC /* HomeView */,
 				286ECEDA2C1BCA7F00D9F7FC /* OnBoardingView */,
 			);
@@ -122,6 +125,14 @@
 				286ECEE12C1BCE9900D9F7FC /* WareTextField.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		28BA41A52C1FC3B9006D24B0 /* ProductView */ = {
+			isa = PBXGroup;
+			children = (
+				28BA41A62C1FC3CC006D24B0 /* ProductView.swift */,
+			);
+			path = ProductView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,6 +216,7 @@
 				286ECEDD2C1BCC6D00D9F7FC /* HomeView.swift in Sources */,
 				286ECEE22C1BCE9900D9F7FC /* WareTextField.swift in Sources */,
 				286ECEE02C1BCCA000D9F7FC /* LottieView.swift in Sources */,
+				28BA41A72C1FC3CC006D24B0 /* ProductView.swift in Sources */,
 				286ECEC42C1B775F00D9F7FC /* IWarehouseApp.swift in Sources */,
 				286ECED22C1B7C9D00D9F7FC /* OnBoardView.swift in Sources */,
 			);

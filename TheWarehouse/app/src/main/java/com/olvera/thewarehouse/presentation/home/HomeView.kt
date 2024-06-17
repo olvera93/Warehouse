@@ -160,7 +160,10 @@ fun Loader() {
     )
 }
 
-@Preview()
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
 @Composable
 fun HomeViewPreview() {
     val navController = rememberNavController()
