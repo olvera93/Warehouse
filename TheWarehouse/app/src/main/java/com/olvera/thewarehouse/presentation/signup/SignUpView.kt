@@ -11,19 +11,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +32,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -42,14 +44,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.olvera.thewarehouse.R
 import com.olvera.thewarehouse.components.WarePasswordTextField
 import com.olvera.thewarehouse.components.WareTextField
 
 @Composable
-fun SignUpView() {
+fun SignUpView(
+    navController: NavController
+) {
 
     val focusManager = LocalFocusManager.current
+
 
     Box(
         modifier = Modifier
@@ -217,8 +224,8 @@ fun SignUpView() {
                     .padding(top = 32.dp, bottom = 64.dp)
                     .padding(horizontal = 20.dp),
                 onClick = {
-                    //navController.popBackStack()
-                    //navController.navigate("ProductsView")
+                    navController.popBackStack()
+                    navController.navigate("ProductsView")
                 }) {
                 Text(text = "Register")
             }
@@ -228,7 +235,7 @@ fun SignUpView() {
             Row(
                 modifier = Modifier
                     .clickable {
-                        //navController.navigate("SignUp")
+                        navController.navigate("Home")
                     }
                     .padding(top = 16.dp),
             ) {
@@ -249,6 +256,7 @@ fun SignUpView() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountrySelector() {
     var expanded by remember { mutableStateOf(false) }
@@ -260,60 +268,73 @@ fun CountrySelector() {
         "Canadá",
         "España",
         "Argentina",
+        "Colombia",
+        "México",
+        "Estados Unidos",
+        "Canadá",
+        "España",
+        "Argentina",
         "Colombia"
     )
+    val focusRequester = remember { FocusRequester() }
 
-    
-    Column {
-        OutlinedTextField(
-            value = selectedCountry,
-            onValueChange = { selectedCountry = it },
-            readOnly = true,
-            modifier = Modifier
-                .clickable { expanded = true }
-                .fillMaxWidth()
-                .padding(bottom = 6.dp)
-                .padding(horizontal = 20.dp),
-            label = { Text(text = stringResource(id = R.string.country_title)) },
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Filled.ArrowDropDown,
-                    contentDescription = null,
-                    modifier = Modifier.clickable { expanded = !expanded }
-                )
-            },
-            shape = MaterialTheme.shapes.small,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.primary,
-                unfocusedTextColor = MaterialTheme.colorScheme.primary,
-                focusedContainerColor = MaterialTheme.colorScheme.background,
-                unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                unfocusedPlaceholderColor = MaterialTheme.colorScheme.tertiary.copy(
-                    alpha = 0.5f
-                ),
-                focusedPlaceholderColor = MaterialTheme.colorScheme.tertiary.copy(
-                    alpha = 0.5f
-                ),
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = Color.Transparent
-            )
-        )
-        DropdownMenu(expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier.fillMaxWidth()
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = {
+                expanded = !expanded
+            }
         ) {
 
-            countries.forEach { country ->
-                DropdownMenuItem(
-                    text = { Text(text = country) },
-                    onClick = {
-                        selectedCountry = country
-                        expanded = false
-                    }
+            TextField(
+                value = selectedCountry,
+                onValueChange = { selectedCountry = it },
+                readOnly = true,
+                modifier = Modifier
+                    .clickable { expanded = true }
+                    .fillMaxWidth()
+                    .padding(bottom = 6.dp)
+                    .padding(horizontal = 20.dp)
+                    .menuAnchor()
+                    .focusRequester(focusRequester),
+                label = { Text(text = stringResource(id = R.string.country_title)) },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                shape = MaterialTheme.shapes.small,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.primary,
+                    unfocusedTextColor = MaterialTheme.colorScheme.primary,
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                    focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                    unfocusedPlaceholderColor = MaterialTheme.colorScheme.tertiary.copy(
+                        alpha = 0.5f
+                    ),
+                    focusedPlaceholderColor = MaterialTheme.colorScheme.tertiary.copy(
+                        alpha = 0.5f
+                    ),
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = Color.Transparent
                 )
-
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier.exposedDropdownSize()
+            ) {
+                countries.forEach { country ->
+                    DropdownMenuItem(
+                        text = { Text(text = country) },
+                        onClick = {
+                            selectedCountry = country
+                            expanded = false
+                        },
+                    )
+                }
             }
         }
     }
@@ -324,6 +345,7 @@ fun CountrySelector() {
     showBackground = true
 )
 fun SignUpViewPreview() {
-    SignUpView()
+    val navController = rememberNavController()
+    SignUpView(navController = navController)
 }
 

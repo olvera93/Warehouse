@@ -36,7 +36,7 @@ fun NavManager(context: Context, onboardingCompleted: Boolean, productsViewModel
         }
 
         composable("SignUp") {
-            SignUpView()
+            SignUpView(navController = navController)
         }
 
         composable("ProductsView") {
