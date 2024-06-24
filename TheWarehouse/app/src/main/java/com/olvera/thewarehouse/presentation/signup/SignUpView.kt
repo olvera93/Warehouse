@@ -25,6 +25,8 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,22 +43,30 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.olvera.thewarehouse.R
 import com.olvera.thewarehouse.components.WarePasswordTextField
 import com.olvera.thewarehouse.components.WareTextField
+import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpView(
-    navController: NavController
+    navController: NavController,
+    signUpViewModel: SignUpViewModel
 ) {
 
     val focusManager = LocalFocusManager.current
+    val uiState by signUpViewModel.uiState.collectAsState()
 
+    LaunchedEffect(uiState) {
+        if (uiState is SignUpUiState.Success) {
+            navController.popBackStack()
+            navController.navigate("ProductsView")
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -79,8 +89,8 @@ fun SignUpView(
             Spacer(modifier = Modifier.weight(1f))
 
             WareTextField(
-                value = "Username",
-                onValueChange = { it },
+                value = signUpViewModel.formState.username,
+                onValueChange = { signUpViewModel.onUsernameChange(it) },
                 placeholder = "Username",
                 contentDescription = "Enter your username",
                 modifier = Modifier
@@ -101,8 +111,8 @@ fun SignUpView(
             Spacer(modifier = Modifier.weight(.2f))
 
             WareTextField(
-                value = "Name",
-                onValueChange = { it },
+                value = signUpViewModel.formState.firstname,
+                onValueChange = { signUpViewModel.onFirstnameChange(it) },
                 placeholder = "Name",
                 contentDescription = "Enter your name",
                 modifier = Modifier
@@ -123,8 +133,8 @@ fun SignUpView(
             Spacer(modifier = Modifier.weight(.2f))
 
             WareTextField(
-                value = "Lastname",
-                onValueChange = { it },
+                value = signUpViewModel.formState.lastname,
+                onValueChange = { signUpViewModel.onLastnameChange(it) },
                 placeholder = "Lastname",
                 contentDescription = "Enter your Lastname",
                 modifier = Modifier
@@ -146,8 +156,8 @@ fun SignUpView(
             Spacer(modifier = Modifier.weight(.2f))
 
             WareTextField(
-                value = "Email",
-                onValueChange = { it },
+                value = signUpViewModel.formState.email,
+                onValueChange = { signUpViewModel.onEmailChange(it) },
                 placeholder = "Email",
                 contentDescription = "Enter your email",
                 modifier = Modifier
@@ -169,9 +179,9 @@ fun SignUpView(
             Spacer(modifier = Modifier.weight(.2f))
 
             WarePasswordTextField(
-                value = "state.matchPassword",
-                onValueChange = { it },
-                placeholder = "Confirm password",
+                value = signUpViewModel.formState.password,
+                onValueChange = { signUpViewModel.onPasswordChange(it) },
+                placeholder = "Password",
                 contentDescription = "Enter confirm password",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -192,8 +202,8 @@ fun SignUpView(
             Spacer(modifier = Modifier.weight(.2f))
 
             WareTextField(
-                value = "Pno",
-                onValueChange = { it },
+                value = signUpViewModel.formState.mobileNumber,
+                onValueChange = { signUpViewModel.onMobileNumberChange(it) },
                 placeholder = "Mobile number",
                 contentDescription = "Enter your mobile number",
                 modifier = Modifier
@@ -214,7 +224,7 @@ fun SignUpView(
 
             Spacer(modifier = Modifier.weight(.2f))
 
-            CountrySelector()
+            CountrySelector(signUpViewModel = signUpViewModel)
 
             Spacer(modifier = Modifier.weight(.2f))
 
@@ -224,8 +234,11 @@ fun SignUpView(
                     .padding(top = 32.dp, bottom = 64.dp)
                     .padding(horizontal = 20.dp),
                 onClick = {
-                    navController.popBackStack()
-                    navController.navigate("ProductsView")
+                    signUpViewModel.viewModelScope.launch {
+                        signUpViewModel.createUser()
+                    }
+
+
                 }) {
                 Text(text = "Register")
             }
@@ -252,23 +265,25 @@ fun SignUpView(
                     color = Color.Red
                 )
             }
+
+            if (uiState is SignUpUiState.Error) {
+                Text(
+                    text = (uiState as SignUpUiState.Error).message,
+                    color = Color.Red,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CountrySelector() {
+fun CountrySelector(signUpViewModel: SignUpViewModel) {
     var expanded by remember { mutableStateOf(false) }
     val dropdownTitle = stringResource(id = R.string.dropdown_title)
-    var selectedCountry by remember { mutableStateOf(dropdownTitle) }
+    val selectedCountry = signUpViewModel.formState.country
     val countries = listOf(
-        "México",
-        "Estados Unidos",
-        "Canadá",
-        "España",
-        "Argentina",
-        "Colombia",
         "México",
         "Estados Unidos",
         "Canadá",
@@ -277,7 +292,6 @@ fun CountrySelector() {
         "Colombia"
     )
     val focusRequester = remember { FocusRequester() }
-
 
     Box(
         modifier = Modifier
@@ -289,10 +303,9 @@ fun CountrySelector() {
                 expanded = !expanded
             }
         ) {
-
             TextField(
-                value = selectedCountry,
-                onValueChange = { selectedCountry = it },
+                value = selectedCountry.ifEmpty { dropdownTitle },
+                onValueChange = { signUpViewModel.onCountryChange(selectedCountry) },
                 readOnly = true,
                 modifier = Modifier
                     .clickable { expanded = true }
@@ -330,7 +343,7 @@ fun CountrySelector() {
                     DropdownMenuItem(
                         text = { Text(text = country) },
                         onClick = {
-                            selectedCountry = country
+                            signUpViewModel.onCountryChange(country)
                             expanded = false
                         },
                     )
@@ -338,14 +351,5 @@ fun CountrySelector() {
             }
         }
     }
-}
-
-@Composable
-@Preview(
-    showBackground = true
-)
-fun SignUpViewPreview() {
-    val navController = rememberNavController()
-    SignUpView(navController = navController)
 }
 
