@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.olvera.thewarehouse.navigation.NavManager
 import com.olvera.thewarehouse.presentation.product.ProductsViewModel
+import com.olvera.thewarehouse.presentation.signup.SignUpViewModel
 import com.olvera.thewarehouse.ui.theme.TheWarehouseTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +27,7 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
     private val productViewModel: ProductsViewModel by viewModels()
+    private val signUpViewModel: SignUpViewModel by viewModels()
     private var onboardingCompleted by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +48,8 @@ class MainActivity : ComponentActivity() {
                     NavManager(
                         context = this,
                         onboardingCompleted = onboardingCompleted,
-                        productsViewModel = productViewModel
+                        productsViewModel = productViewModel,
+                        signUpViewModel = signUpViewModel
                     )
                 }
             }

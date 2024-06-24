@@ -12,10 +12,12 @@ import com.olvera.thewarehouse.presentation.onboarding.OnBoardingView
 import com.olvera.thewarehouse.presentation.product.ProductView
 import com.olvera.thewarehouse.presentation.product.ProductsViewModel
 import com.olvera.thewarehouse.presentation.signup.SignUpView
+import com.olvera.thewarehouse.presentation.signup.SignUpViewModel
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun NavManager(context: Context, onboardingCompleted: Boolean, productsViewModel: ProductsViewModel) {
+fun NavManager(context: Context, onboardingCompleted: Boolean, productsViewModel: ProductsViewModel,
+               signUpViewModel: SignUpViewModel) {
 
     val navController = rememberNavController()
 
@@ -36,7 +38,7 @@ fun NavManager(context: Context, onboardingCompleted: Boolean, productsViewModel
         }
 
         composable("SignUp") {
-            SignUpView()
+            SignUpView(navController = navController, signUpViewModel = signUpViewModel)
         }
 
         composable("ProductsView") {
