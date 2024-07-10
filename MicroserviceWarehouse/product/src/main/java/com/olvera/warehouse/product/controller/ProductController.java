@@ -1,6 +1,7 @@
 package com.olvera.warehouse.product.controller;
 
 
+import com.olvera.warehouse.product.dto.ProductResponse;
 import com.olvera.warehouse.product.model.Product;
 import com.olvera.warehouse.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,10 +35,10 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "Not found user"),
             @ApiResponse(responseCode = "400", description = "Bad request")
     })
-    @PostMapping(value = "save")
-    public ResponseEntity<Product> login(@Valid @RequestBody Product request) {
+    @PostMapping(value = "/save")
+    public ResponseEntity<ProductResponse> login(@Valid @RequestBody ProductResponse request) {
 
-        Product result = productService.saveProduct(request);
+        ProductResponse result = productService.saveProduct(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 

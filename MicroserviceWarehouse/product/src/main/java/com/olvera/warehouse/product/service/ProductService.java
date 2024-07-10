@@ -1,5 +1,6 @@
 package com.olvera.warehouse.product.service;
 
+import com.olvera.warehouse.product.dto.ProductResponse;
 import com.olvera.warehouse.product.model.Product;
 import com.olvera.warehouse.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public Product saveProduct(Product product) {
+    public ProductResponse saveProduct(ProductResponse product) {
 
         Product newProduct = Product.builder()
                 .productName(product.getProductName())
@@ -20,7 +21,15 @@ public class ProductService {
                 .image(product.getImage())
                 .build();
 
-        return productRepository.save(newProduct);
+        productRepository.save(newProduct);
+
+        return ProductResponse.builder()
+                .productId(newProduct.getProductId())
+                .productName(newProduct.getProductName())
+                .price(newProduct.getPrice())
+                .discountPercentage(newProduct.getDiscountPercentage())
+                .image(newProduct.getImage())
+                .build();
     }
 
 }
