@@ -19,6 +19,7 @@ public class ProductService {
                 .price(product.getPrice())
                 .discountPercentage(product.getDiscountPercentage())
                 .image(product.getImage())
+                .userId(product.getUserId())
                 .build();
 
         productRepository.save(newProduct);
@@ -29,6 +30,7 @@ public class ProductService {
                 .price(newProduct.getPrice())
                 .discountPercentage(newProduct.getDiscountPercentage())
                 .image(newProduct.getImage())
+                .userId(newProduct.getUserId())
                 .build();
     }
 
