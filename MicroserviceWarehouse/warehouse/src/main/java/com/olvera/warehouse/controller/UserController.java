@@ -1,11 +1,13 @@
 package com.olvera.warehouse.controller;
 
 import com.olvera.warehouse.dto.UserResponse;
+import com.olvera.warehouse.dto.UsersProductResponse;
 import com.olvera.warehouse.service.UserService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +24,15 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+
+
+    @PostMapping(value = "/saveProducts/{userId}")
+    public ResponseEntity<UsersProductResponse> saveProduct(
+            @PathVariable(name = "userId", required = true) Integer userId,
+            @RequestBody UsersProductResponse.ProductClientResponse productClientResponse) {
+        UsersProductResponse result = userService.saveProducts(userId, productClientResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
 
     @PatchMapping(value = "/users/{userId}")
     public ResponseEntity<UserResponse> updateUser(

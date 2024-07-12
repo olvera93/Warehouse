@@ -1,6 +1,8 @@
 package com.olvera.warehouse.service;
 
+import com.olvera.warehouse.client.ProductServiceConsumer;
 import com.olvera.warehouse.dto.UserResponse;
+import com.olvera.warehouse.dto.UsersProductResponse;
 import com.olvera.warehouse.exception.ResourceAlreadyExist;
 import com.olvera.warehouse.exception.ResourceNotFoundException;
 import com.olvera.warehouse.model.User;
@@ -9,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +21,39 @@ import java.util.Map;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final ProductServiceConsumer productServiceConsumer;
+
+    public UsersProductResponse saveProducts(Integer userId, UsersProductResponse.ProductClientResponse productClientResponse) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new ResourceNotFoundException("User", "UserId", userId.toString()));
+
+        List<UsersProductResponse.ProductClientResponse> productClientResponseList = new ArrayList<>();
+
+        UsersProductResponse.ProductClientResponse saveProductClientResponse = UsersProductResponse.ProductClientResponse.builder()
+                .productId(productClientResponse.getProductId())
+                .productName(productClientResponse.getProductName())
+                .price(productClientResponse.getPrice())
+                .discountPercentage(productClientResponse.getDiscountPercentage())
+                .image(productClientResponse.getImage())
+                .build();
+
+        productClientResponseList.add(saveProductClientResponse);
+
+        productServiceConsumer.saveProduct(saveProductClientResponse);
+
+        return UsersProductResponse.builder()
+                .userId(userId)
+                .username(user.getUsername())
+                .firstname(user.getFirstname())
+                .lastname(user.getLastname())
+                .email(user.getEmail())
+                .mobileNumber(user.getMobileNumber())
+                .country(user.getCountry())
+                .products(productClientResponseList)
+                .build();
+
+    }
 
     public UserResponse getUserById(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(
