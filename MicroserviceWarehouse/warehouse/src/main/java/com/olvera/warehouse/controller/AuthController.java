@@ -1,10 +1,13 @@
 package com.olvera.warehouse.controller;
 
 import com.olvera.warehouse.dto.AuthResponse;
+import com.olvera.warehouse.dto.ErrorResponse;
 import com.olvera.warehouse.dto.LoginRequest;
 import com.olvera.warehouse.dto.RegisterRequest;
 import com.olvera.warehouse.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,8 +34,8 @@ public class AuthController {
             description = "You can log in")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
-            @ApiResponse(responseCode = "404", description = "Not found user"),
-            @ApiResponse(responseCode = "400", description = "Bad request")
+            @ApiResponse(responseCode = "404", description = "Not found user", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping(value = "login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
@@ -44,8 +47,8 @@ public class AuthController {
             description = "You can create a user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "400", description = "Bad request")
+            @ApiResponse(responseCode = "404", description = "Not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping(value = "register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {

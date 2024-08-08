@@ -28,6 +28,10 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User", "UserId", userId.toString()));
 
+        if (!user.getUserId().equals(productClientResponse.getUserId())) {
+            throw new IllegalArgumentException("The userId doesn't match");
+        }
+
         List<UsersProductResponse.ProductClientResponse> productClientResponseList = new ArrayList<>();
 
         UsersProductResponse.ProductClientResponse saveProductClientResponse = UsersProductResponse.ProductClientResponse.builder()
@@ -36,6 +40,7 @@ public class UserService {
                 .price(productClientResponse.getPrice())
                 .discountPercentage(productClientResponse.getDiscountPercentage())
                 .image(productClientResponse.getImage())
+                .userId(productClientResponse.getUserId())
                 .build();
 
         productClientResponseList.add(saveProductClientResponse);
@@ -118,8 +123,28 @@ public class UserService {
         propertyToUpdate = "email";
         if (updates.containsKey(propertyToUpdate) && updates.get(propertyToUpdate) != null) {
             String newEmail = updates.get(propertyToUpdate).toString();
+            if (userRepository.existsByEmail(newEmail)) {
+                throw new ResourceAlreadyExist("User", "email", newEmail);
+            }
+            nullOrEmptyValidation(newEmail, "Email cannot be null or empty");
+            user.setEmail(newEmail);
+        }
 
+        propertyToUpdate = "mobileNumber";
+        if (updates.containsKey(propertyToUpdate) && updates.get(propertyToUpdate) != null) {
+            String newNumber = updates.get(propertyToUpdate).toString();
+            if (userRepository.existsByMobileNumber(newNumber)) {
+                throw new ResourceAlreadyExist("User", "mobileNumber", newNumber);
+            }
+            nullOrEmptyValidation(newNumber, "Mobile number cannot be null or empty");
+            user.setMobileNumber(newNumber);
+        }
 
+        propertyToUpdate = "country";
+        if (updates.containsKey(propertyToUpdate) && updates.get(propertyToUpdate) != null) {
+            String newCountry = updates.get(propertyToUpdate).toString();
+            nullOrEmptyValidation(newCountry, "Country cannot be null or empty");
+            user.setCountry(newCountry);
         }
 
         User userReturned = userRepository.save(user);

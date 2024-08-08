@@ -21,4 +21,6 @@ public class Product {
 
     private String image;
 
+    private Integer userId;
+
 }
