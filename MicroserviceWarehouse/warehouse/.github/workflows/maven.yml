@@ -22,8 +22,8 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn -B package --file warehouse/pom.xml
-        working-directory: warehouse
+        run: mvn -B package --file MicroserviceWarehouse/warehouse/pom.xml
+        working-directory: MicroserviceWarehouse/warehouse
 
   publish-job:
     runs-on: ubuntu-latest
@@ -41,10 +41,10 @@ jobs:
 
       - name: Run Tests and Verify
         run: mvn --batch-mode --update-snapshots verify
-        working-directory: warehouse
+        working-directory: MicroserviceWarehouse/warehouse
 
       - name: Prepare Artifact for Upload
-        run: mkdir staging && cp warehouse/target/*.jar staging
+        run: mkdir staging && cp MicroserviceWarehouse/warehouse/target/*.jar staging
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
