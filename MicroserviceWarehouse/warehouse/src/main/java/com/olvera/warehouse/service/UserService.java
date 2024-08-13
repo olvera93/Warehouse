@@ -60,6 +60,7 @@ public class UserService {
 
     }
 
+
     public UserResponse getUserById(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User", "UserId", userId.toString()));
