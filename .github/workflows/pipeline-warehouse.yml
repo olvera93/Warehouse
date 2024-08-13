@@ -16,6 +16,7 @@ jobs:
 
       - name: Print directory structure
         run: |
+          echo "Printing directory structure..."
           ls -R
 
       - name: Set up JDK 17
@@ -48,12 +49,10 @@ jobs:
         working-directory: MicroserviceWarehouse/warehouse
 
       - name: Prepare Artifact for Upload
-        run: mkdir staging && cp MicroserviceWarehouse/warehouse/target/*.jar staging
+        run: mkdir -p staging && cp MicroserviceWarehouse/warehouse/target/*.jar staging
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: Package
           path: staging
-
-
