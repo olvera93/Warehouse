@@ -1,17 +1,19 @@
-name: Warehouse Maven Build
+name: Build and Publish
 
 on:
   push:
-    branches: ["main", "dev"]
+    branches:
+      - main
   pull_request:
-    branches: ["main", "dev"]
+    branches:
+      - main
 
 jobs:
-  build_test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Check out the code
         uses: actions/checkout@v3
 
       - name: Set up JDK 17
@@ -19,23 +21,15 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: maven
 
       - name: Build with Maven
-        run: mvn -B package
-        working-directory: MicroserviceWarehouse/warehouse
+        run: mvn -B package --file MicroserviceWarehouse/warehouse/pom.xml
 
-      - name: List files in target directory after build
-        run: ls -R target
-        working-directory: MicroserviceWarehouse/warehouse
-
-  publish-job:
+  publish:
     runs-on: ubuntu-latest
-    needs: build_test
-    if: success()  # Solo ejecutar si el job anterior fue exitoso
-
+    needs: build
     steps:
-      - name: Checkout code
+      - name: Check out the code
         uses: actions/checkout@v3
 
       - name: Set up JDK 17
@@ -44,16 +38,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: List files in target directory in publish-job
+      - name: List target directory
         run: ls -R MicroserviceWarehouse/warehouse/target
-        working-directory: MicroserviceWarehouse/warehouse
 
-      - name: Prepare Artifact for Upload
+      - name: Copy JAR file to staging
         run: mkdir -p staging && cp MicroserviceWarehouse/warehouse/target/*.jar staging
-        working-directory: MicroserviceWarehouse/warehouse
 
-      - name: Upload Artifact
+      - name: Upload JAR file as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Package
-          path: staging
+          name: warehouse-jar
+          path: staging/*.jar
