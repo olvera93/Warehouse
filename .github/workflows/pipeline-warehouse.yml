@@ -36,10 +36,16 @@ jobs:
           distribution: 'temurin'
       - name: Copy artifacts
         run: |
-          mkdir staging
-          cp MicroserviceWarehouse/warehouse/target/*.jar staging
-          # Add error handling or logging if needed
-      - uses: actions/upload-artifact@v3
+          mkdir -p staging
+          # Verificar si se generó algún archivo JAR antes de copiar
+          if [[ -f MicroserviceWarehouse/warehouse/target/*.jar ]]; then
+            cp MicroserviceWarehouse/warehouse/target/*.jar staging
+          else
+            echo "No se encontraron archivos JAR en el directorio target. Verifica el proceso de build."
+            exit 1
+          fi
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         with:
           name: Package
           path: staging
