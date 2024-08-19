@@ -78,9 +78,6 @@ public class ProductService {
                 products.getTotalPages(),
                 products.isLast()
         );
-
-
-
     }
 
     public void deleteProductById(String productId) {
