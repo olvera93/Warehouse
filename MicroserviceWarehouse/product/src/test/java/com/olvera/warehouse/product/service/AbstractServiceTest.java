@@ -15,10 +15,22 @@ public class AbstractServiceTest {
 
     protected ProductResponse productResponse;
 
+    protected Integer userId;
+
+    protected int pageNo;
+    protected int pageSize;
+
 
     @BeforeEach
     public void prepare() {
+
         productId = "JDSI289";
+
+        userId = 2;
+
+        pageNo = 5;
+
+        pageSize = 10;
 
         productResponse = ProductResponse.builder()
                 .productId(productId)

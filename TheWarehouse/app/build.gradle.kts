@@ -85,8 +85,17 @@ dependencies {
     // Coil
     implementation(libs.coil.kl)
 
+    // Mockito
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockwebserver)
+    testImplementation(libs.retrofit2)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.converter.gson)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

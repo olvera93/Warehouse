@@ -2,6 +2,7 @@ package com.olvera.warehouse.product.controller;
 
 
 import com.olvera.warehouse.product.dto.ErrorResponse;
+import com.olvera.warehouse.product.dto.PageResponse;
 import com.olvera.warehouse.product.dto.ProductResponse;
 import com.olvera.warehouse.product.model.Product;
 import com.olvera.warehouse.product.service.ProductService;
@@ -20,6 +21,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import static com.olvera.warehouse.product.util.AppConstants.DEFAULT_PAGE_NUMBER;
+import static com.olvera.warehouse.product.util.AppConstants.DEFAULT_PAGE_SIZE;
+
 @RestController
 @RequestMapping(path = "/product", produces = (MediaType.APPLICATION_JSON_VALUE))
 @RequiredArgsConstructor
@@ -37,7 +41,9 @@ public class ProductController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
             @ApiResponse(responseCode = "404", description = "Not found product", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Error with the server", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+
     })
     @PostMapping(value = "/save")
     public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody ProductResponse request) {
@@ -52,6 +58,7 @@ public class ProductController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
             @ApiResponse(responseCode = "404", description = "Not found product", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Error with the server", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping(value = "/products/{productId}")
     public ResponseEntity<ProductResponse> getProductById(
@@ -61,6 +68,25 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
 
     }
+
+    @Operation(
+            summary = "Get user's products",
+            description = "You can get all products for a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Not found product", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Error with the server", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/usersProducts")
+    public ResponseEntity<PageResponse> getUsersProducts(
+            @RequestParam(value = "userId", defaultValue = "1", required = true)Integer userId,
+            @RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE, required = false) int pageSize
+    ) {
+        PageResponse result = productService.getUsersProducts(userId, pageNo, pageSize);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
 
     @Operation(summary = "Delete product", description = "Deletes product if exists")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Product deleted successfully"),
