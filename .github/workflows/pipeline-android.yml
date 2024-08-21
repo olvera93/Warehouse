@@ -21,9 +21,13 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: List files in the current directory
+      run: ls -al
+
     - name: Build with Gradle
-      run: Warehouse/TheWarehouse/gradlew build
+      run: cd Warehouse/TheWarehouse && ./gradlew build
 
     - name: Run Unit Tests
-      run: Warehouse/TheWarehouse/gradlew test
+      run: cd Warehouse/TheWarehouse && ./gradlew test
+
 
