@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "main", "dev" ] 
+    branches: [ "main", "dev" ]
   pull_request:
-    branches: [ "main", "dev" ] 
+    branches: [ "main", "dev" ]
 
 jobs:
   build:
@@ -22,10 +22,11 @@ jobs:
         java-version: '17'
 
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: chmod +x Warehouse/TheWarehouse/gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build
+      run: Warehouse/TheWarehouse/gradlew build
 
     - name: Run Unit Tests
-      run: ./gradlew test
+      run: Warehouse/TheWarehouse/gradlew test
+
