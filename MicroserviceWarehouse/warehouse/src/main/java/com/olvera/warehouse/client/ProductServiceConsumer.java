@@ -1,5 +1,6 @@
 package com.olvera.warehouse.client;
 
+import com.olvera.warehouse.dto.PageResponse;
 import com.olvera.warehouse.dto.UsersProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,8 @@ public class ProductServiceConsumer {
         return productServiceClient.saveProduct(productClientResponse).getBody();
     }
 
-
+    public PageResponse getUsersProducts(Integer userId, int pageNo, int pageSize ) {
+        return productServiceClient.getUsersProducts(userId, pageNo, pageSize).getBody();
+    }
 
 }
