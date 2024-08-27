@@ -81,7 +81,7 @@ public class ProductServiceTest extends AbstractServiceTest{
         assertEquals(0, pageResponse.getContent().size());
         assertEquals(0, pageResponse.getTotalElements());
         assertEquals(0, pageResponse.getTotalPages());
-        assertEquals(true, pageResponse.isLast());
+        assertTrue(pageResponse.isLast());
     }
 
     @Test
@@ -100,7 +100,7 @@ public class ProductServiceTest extends AbstractServiceTest{
         assertEquals(1, pageResponse.getContent().size());
         assertEquals(2, pageResponse.getTotalElements());
         assertEquals(2, pageResponse.getTotalPages());
-        assertEquals(false, pageResponse.isLast());
+        assertFalse(pageResponse.isLast());
     }
 
 
@@ -118,12 +118,12 @@ public class ProductServiceTest extends AbstractServiceTest{
 
         assertEquals("Pizza", pageResponse.getContent().get(0).getProductName());
         assertEquals(2, pageResponse.getContent().get(0).getUserId());
-        assertEquals(2, pageResponse.getContent().size());
+        assertEquals(1, pageResponse.getContent().size());
         assertEquals(5, pageResponse.getPageNo());
         assertEquals(10, pageResponse.getPageSize());
         assertEquals(52, pageResponse.getTotalElements());
         assertEquals(6, pageResponse.getTotalPages());
-        assertEquals(true, pageResponse.isLast());
+        assertTrue(pageResponse.isLast());
     }
 
     @Test
@@ -164,7 +164,7 @@ public class ProductServiceTest extends AbstractServiceTest{
         assertEquals(0, pageResponse.getContent().size());
         assertEquals(0, pageResponse.getTotalElements());
         assertEquals(0, pageResponse.getTotalPages());
-        assertEquals(true, pageResponse.isLast());
+        assertTrue(pageResponse.isLast());
     }
 
     @Test

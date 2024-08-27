@@ -1,6 +1,7 @@
 package com.olvera.warehouse.controller;
 
 import com.olvera.warehouse.dto.ErrorResponse;
+import com.olvera.warehouse.dto.PageResponse;
 import com.olvera.warehouse.dto.UserResponse;
 import com.olvera.warehouse.dto.UsersProductResponse;
 import com.olvera.warehouse.service.UserService;
@@ -20,6 +21,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+
+import static com.olvera.warehouse.util.AppConstants.DEFAULT_PAGE_NUMBER;
+import static com.olvera.warehouse.util.AppConstants.DEFAULT_PAGE_SIZE;
 
 @RestController
 @RequestMapping(path = "/api/v1", produces = (MediaType.APPLICATION_JSON_VALUE))
@@ -80,4 +84,23 @@ public class UserController {
     ) {
         return ResponseEntity.ok(userService.getUserById(userId));
     }
+
+
+    @Operation(
+            summary = "Get all products of the user",
+            description = "You can get all products of the user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Not found product", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+    })
+    @GetMapping("/usersProducts")
+    public ResponseEntity<PageResponse> getUsersProduct(
+            @RequestParam(value = "userId", defaultValue = "1", required = true)Integer userId,
+            @RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE, required = false) int pageSize
+    ) {
+        PageResponse result = userService.getUsersProducts(userId, pageNo, pageSize);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
 }

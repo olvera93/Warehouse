@@ -1,6 +1,8 @@
 package com.olvera.warehouse.service;
 
 import com.olvera.warehouse.client.ProductServiceConsumer;
+import com.olvera.warehouse.dto.CartItemResponseClient;
+import com.olvera.warehouse.dto.PageResponse;
 import com.olvera.warehouse.dto.UserResponse;
 import com.olvera.warehouse.dto.UsersProductResponse;
 import com.olvera.warehouse.exception.ResourceAlreadyExist;
@@ -11,11 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -133,6 +136,60 @@ public class UserServiceTest extends AbstractServiceTest {
                 .hasMessageContaining("email");
 
         verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    public void testGetUsersProducts_UserHasNoProducts() {
+        List<CartItemResponseClient> emptyProductList = Arrays.asList();
+        PageResponse emptyPageResponse = new PageResponse(emptyProductList, pageNo, pageSize, 0L, 0, true);
+
+        when(productServiceConsumer.getUsersProducts(userId, pageNo, pageSize)).thenReturn(emptyPageResponse);
+        PageResponse result = userService.getUsersProducts(userId, pageNo, pageSize);
+
+        assertEquals(0, result.getContent().size());
+        assertEquals(0, result.getTotalElements());
+        assertEquals(0, result.getTotalPages());
+        assertTrue(result.isLast());
+
+        verify(productServiceConsumer).getUsersProducts(userId, pageNo, pageSize);
+
+    }
+
+    @Test
+    public void testGetUsersProducts_MultiplePages() {
+
+        List<CartItemResponseClient> cartItemResponseList = Arrays.asList(cartItemResponseClient);
+
+        PageResponse pageResponseMock = new PageResponse(cartItemResponseList, pageNo, pageSize, 2L, 2, false);
+
+        when(productServiceConsumer.getUsersProducts(userId, pageNo, pageSize)).thenReturn(pageResponseMock);
+
+        PageResponse result = userService.getUsersProducts(userId, pageNo, pageSize);
+
+        assertEquals(1, result.getContent().size());
+        assertEquals(2, result.getTotalElements());
+        assertEquals(2, result.getTotalPages());
+        assertFalse(result.isLast());
+    }
+
+    @Test
+    public void testGetUsersProducts() {
+        List<CartItemResponseClient> cartItemResponseList = Arrays.asList(cartItemResponseClient);
+
+        PageResponse pageResponseMock = new PageResponse(cartItemResponseList, pageNo, pageSize, cartItemResponseList.size(), 2, false);
+
+        when(productServiceConsumer.getUsersProducts(userId, pageNo, pageSize)).thenReturn(pageResponseMock);
+
+        PageResponse result = productServiceConsumer.getUsersProducts(userId, pageNo, pageSize);
+
+        assertEquals("Pasta", result.getContent().get(0).getProductName());
+        assertEquals(3459, result.getContent().get(0).getUserId());
+        assertEquals(1, result.getContent().size());
+        assertEquals(1, result.getPageNo());
+        assertEquals(10, result.getPageSize());
+        assertEquals(1, result.getTotalElements());
+        assertEquals(2, result.getTotalPages());
+        assertFalse(result.isLast());
     }
 
     @Test

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductResponse {
+public class CartItem {
 
     private String productId;
 
@@ -18,14 +18,15 @@ public class ProductResponse {
     private String productName;
 
     @Schema(name = "price", description = "Price of the product", example = "15.20")
-    private double price;
+    private double total;
 
-    @Schema(name = "discountPercentage", description = "Discount if the product has", example = "0.15")
-    private double discountPercentage;
+    @Schema(name = "quantity", description = "Quantity of the product", example = "3")
+    private  int quantity;
 
     @Schema(name = "image", description = "Image of the product", example = "Pizza")
     private String image;
 
     @Schema(name = "userId", description = "To which product(s) the user belongs ", example = "2")
     Integer userId;
+
 }

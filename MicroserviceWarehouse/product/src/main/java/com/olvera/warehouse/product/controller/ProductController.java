@@ -4,7 +4,6 @@ package com.olvera.warehouse.product.controller;
 import com.olvera.warehouse.product.dto.ErrorResponse;
 import com.olvera.warehouse.product.dto.PageResponse;
 import com.olvera.warehouse.product.dto.ProductResponse;
-import com.olvera.warehouse.product.model.Product;
 import com.olvera.warehouse.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import static com.olvera.warehouse.product.util.AppConstants.DEFAULT_PAGE_NUMBER;
 import static com.olvera.warehouse.product.util.AppConstants.DEFAULT_PAGE_SIZE;

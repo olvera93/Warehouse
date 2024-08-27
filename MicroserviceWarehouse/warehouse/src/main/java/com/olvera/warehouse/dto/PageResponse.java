@@ -1,4 +1,4 @@
-package com.olvera.warehouse.product.dto;
+package com.olvera.warehouse.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class PageResponse {
 
-    private List<CartItem> content;
+    private List<CartItemResponseClient> content;
 
     private int pageNo;
 

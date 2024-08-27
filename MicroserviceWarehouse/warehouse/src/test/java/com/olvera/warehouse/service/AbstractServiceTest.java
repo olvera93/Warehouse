@@ -1,5 +1,6 @@
 package com.olvera.warehouse.service;
 
+import com.olvera.warehouse.dto.CartItemResponseClient;
 import com.olvera.warehouse.dto.UserResponse;
 import com.olvera.warehouse.dto.UsersProductResponse;
 import com.olvera.warehouse.model.Role;
@@ -20,11 +21,17 @@ public class AbstractServiceTest {
 
     protected Integer userId;
 
+    protected Integer pageNo;
+
+    protected Integer pageSize;
+
     protected String productId;
 
     protected UserResponse userResponse;
 
     protected UsersProductResponse usersProductResponse;
+
+    protected CartItemResponseClient cartItemResponseClient;
 
     protected UsersProductResponse.ProductClientResponse productClientResponse;
 
@@ -44,6 +51,10 @@ public class AbstractServiceTest {
         anotherUser.setUserId(999);
 
         productId = "JDSI289";
+
+        pageNo = 1;
+
+        pageSize = 10;
 
         updates.put("username", "VictorOlvera");
         updates.put("email", "victor.olvera@gmail.com");
@@ -103,6 +114,15 @@ public class AbstractServiceTest {
                 .country("Mexico")
                 .role(Role.USER)
                 .products(products)
+                .build();
+
+        cartItemResponseClient =  CartItemResponseClient.builder()
+                .productId("JDSI259")
+                .productName("Pasta")
+                .total(10.00)
+                .quantity(2)
+                .image("Pasta")
+                .userId(userId)
                 .build();
 
     }

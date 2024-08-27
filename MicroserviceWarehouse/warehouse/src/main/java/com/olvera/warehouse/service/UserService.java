@@ -1,6 +1,7 @@
 package com.olvera.warehouse.service;
 
 import com.olvera.warehouse.client.ProductServiceConsumer;
+import com.olvera.warehouse.dto.PageResponse;
 import com.olvera.warehouse.dto.UserResponse;
 import com.olvera.warehouse.dto.UsersProductResponse;
 import com.olvera.warehouse.exception.ResourceAlreadyExist;
@@ -74,6 +75,10 @@ public class UserService {
                 .mobileNumber(user.getMobileNumber())
                 .country(user.getCountry())
                 .build();
+    }
+
+    public PageResponse getUsersProducts(Integer userId, int pageNo, int pageSize) {
+        return productServiceConsumer.getUsersProducts(userId, pageNo, pageSize);
     }
 
     @Transactional
@@ -162,6 +167,8 @@ public class UserService {
                 .build();
 
     }
+
+
 
     private void nullOrEmptyValidation(String field, String message) {
         if (field == null || field.isEmpty()) {
