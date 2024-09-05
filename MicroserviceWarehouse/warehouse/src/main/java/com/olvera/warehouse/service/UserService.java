@@ -10,12 +10,16 @@ import com.olvera.warehouse.model.User;
 import com.olvera.warehouse.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static com.olvera.warehouse.util.AppConstants.PRODUCT_CACHE_LIST;
+import static com.olvera.warehouse.util.AppConstants.USER_CACHE;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +65,7 @@ public class UserService {
 
     }
 
-
+    @Cacheable(value = USER_CACHE)
     public UserResponse getUserById(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User", "UserId", userId.toString()));
@@ -77,6 +81,7 @@ public class UserService {
                 .build();
     }
 
+    @Cacheable(value = PRODUCT_CACHE_LIST)
     public PageResponse getUsersProducts(Integer userId, int pageNo, int pageSize) {
         return productServiceConsumer.getUsersProducts(userId, pageNo, pageSize);
     }

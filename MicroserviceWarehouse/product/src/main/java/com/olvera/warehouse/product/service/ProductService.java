@@ -7,12 +7,16 @@ import com.olvera.warehouse.product.exception.ResourceNotFoundException;
 import com.olvera.warehouse.product.model.Product;
 import com.olvera.warehouse.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static com.olvera.warehouse.product.util.AppConstants.PRODUCT_CACHE;
+import static com.olvera.warehouse.product.util.AppConstants.PRODUCT_CACHE_LIST;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +46,7 @@ public class ProductService {
                 .build();
     }
 
+    @Cacheable(value = PRODUCT_CACHE)
     public ProductResponse getProductById(String productId) {
 
         Product product = productRepository.findById(productId).orElseThrow(
@@ -59,6 +64,7 @@ public class ProductService {
 
     }
 
+    @Cacheable(value = PRODUCT_CACHE_LIST)
     public PageResponse getUsersProducts(Integer userId, int pageNo, int pageSize) {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize);
