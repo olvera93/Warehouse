@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 data class Order(
 
     @Id
-    val orderId: String,
+    val orderId: String?,
 
     val ammount: Double,
 
