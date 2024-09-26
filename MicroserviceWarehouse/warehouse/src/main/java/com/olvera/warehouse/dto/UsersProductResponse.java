@@ -1,6 +1,6 @@
 package com.olvera.warehouse.dto;
 
-import com.olvera.warehouse.model.Role;
+import com.olvera.warehouse.model.AppRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UsersProductResponse implements Serializable {
 
-    Integer userId;
+    Long userId;
 
     @NotEmpty(message = "Username can not be a null or empty")
     @Schema(name = "username", description = "The user's nickname", example = "Paco234")
@@ -49,7 +49,7 @@ public class UsersProductResponse implements Serializable {
     @Schema(name = "country", description = "The user's country", example = "Mexico")
     String country;
 
-    Role role;
+    AppRole role;
 
     List<ProductClientResponse> products;
 

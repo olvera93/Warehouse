@@ -3,7 +3,7 @@ package com.olvera.warehouse.service;
 import com.olvera.warehouse.dto.CartItemResponseClient;
 import com.olvera.warehouse.dto.UserResponse;
 import com.olvera.warehouse.dto.UsersProductResponse;
-import com.olvera.warehouse.model.Role;
+import com.olvera.warehouse.model.AppRole;
 import com.olvera.warehouse.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -67,7 +67,7 @@ public class AbstractServiceTest {
                 .email("victor2@gmail.com")
                 .mobileNumber("5599330022")
                 .country("Mexico")
-                .role(Role.USER)
+                .role(AppRole.USER)
                 .build();
 
         user = User.builder()
@@ -78,7 +78,7 @@ public class AbstractServiceTest {
                 .email("victor2@gmail.com")
                 .mobileNumber("5599330022")
                 .country("Mexico")
-                .role(Role.USER)
+                .role(AppRole.USER)
                 .build();
 
         products = new ArrayList<>();
@@ -112,7 +112,7 @@ public class AbstractServiceTest {
                 .email("victor2@gmail.com")
                 .mobileNumber("5599330022")
                 .country("Mexico")
-                .role(Role.USER)
+                .role(AppRole.USER)
                 .products(products)
                 .build();
 

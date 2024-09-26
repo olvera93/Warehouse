@@ -29,7 +29,7 @@ public class UserService {
 
     private final ProductServiceConsumer productServiceConsumer;
 
-    public UsersProductResponse saveProducts(Integer userId, UsersProductResponse.ProductClientResponse productClientResponse) {
+    public UsersProductResponse saveProducts(Long userId, UsersProductResponse.ProductClientResponse productClientResponse) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User", "UserId", userId.toString()));
 
@@ -59,14 +59,14 @@ public class UserService {
                 .lastname(user.getLastname())
                 .email(user.getEmail())
                 .mobileNumber(user.getMobileNumber())
-                .country(user.getCountry())
+                //.country(user.getCountry())
                 .products(productClientResponseList)
                 .build();
 
     }
 
     @Cacheable(value = USER_CACHE)
-    public UserResponse getUserById(Integer userId) {
+    public UserResponse getUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User", "UserId", userId.toString()));
 
@@ -77,7 +77,7 @@ public class UserService {
                 .lastname(user.getLastname())
                 .email(user.getEmail())
                 .mobileNumber(user.getMobileNumber())
-                .country(user.getCountry())
+                //.country(user.getCountry())
                 .build();
     }
 
@@ -87,7 +87,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse updateUser(Integer userId, Map<String, Object> updates) {
+    public UserResponse updateUser(Long userId, Map<String, Object> updates) {
 
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User", "UserId", userId.toString()));
@@ -151,12 +151,6 @@ public class UserService {
             user.setMobileNumber(newNumber);
         }
 
-        propertyToUpdate = "country";
-        if (updates.containsKey(propertyToUpdate) && updates.get(propertyToUpdate) != null) {
-            String newCountry = updates.get(propertyToUpdate).toString();
-            nullOrEmptyValidation(newCountry, "Country cannot be null or empty");
-            user.setCountry(newCountry);
-        }
 
         User userReturned = userRepository.save(user);
 
@@ -167,8 +161,6 @@ public class UserService {
                 .lastname(userReturned.getLastname())
                 .email(userReturned.getEmail())
                 .mobileNumber(userReturned.getMobileNumber())
-                .country(userReturned.getCountry())
-                .role(userReturned.getRole())
                 .build();
 
     }

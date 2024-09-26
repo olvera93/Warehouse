@@ -18,6 +18,10 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
 
+  app:
+    jwtSecret: ${SPRING_APP_JWT_SECRET}
+    jwtExpirationMs: ${SPRING_APP_JWT_EXPIRATION_MS}
+
 server:
   port: 8080
   address: 0.0.0.0
