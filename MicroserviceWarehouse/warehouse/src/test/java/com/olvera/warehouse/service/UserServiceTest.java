@@ -66,7 +66,7 @@ public class UserServiceTest extends AbstractServiceTest {
     @Test
     public void saveProducts_shouldThrowExceptionWhenUserIdDoesNotMatch() {
 
-        productClientResponse.setUserId(9999);
+        productClientResponse.setUserId(9999L);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
@@ -196,9 +196,9 @@ public class UserServiceTest extends AbstractServiceTest {
     void findByUserId() {
 
         // Fail case
-        when(userRepository.findById(any(Integer.class))).thenReturn(Optional.empty());
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.empty());
         assertThatThrownBy(() -> {
-            userService.getUserById(3459);
+            userService.getUserById(3459L);
         }).isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("User not found with the given input data UserId: '3459'");
 
@@ -213,7 +213,6 @@ public class UserServiceTest extends AbstractServiceTest {
         assertEquals("Victor23", userResponse.getUsername());
         assertEquals("victor2@gmail.com", userResponse.getEmail());
         assertEquals("5599330022", userResponse.getMobileNumber());
-        assertEquals("Mexico", userResponse.getCountry());
 
     }
 

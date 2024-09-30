@@ -82,7 +82,7 @@ public class UserService {
     }
 
     @Cacheable(value = PRODUCT_CACHE_LIST)
-    public PageResponse getUsersProducts(Integer userId, int pageNo, int pageSize) {
+    public PageResponse getUsersProducts(Long userId, int pageNo, int pageSize) {
         return productServiceConsumer.getUsersProducts(userId, pageNo, pageSize);
     }
 
