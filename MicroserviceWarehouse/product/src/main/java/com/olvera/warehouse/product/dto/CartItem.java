@@ -29,6 +29,6 @@ public class CartItem implements Serializable {
     private String image;
 
     @Schema(name = "userId", description = "To which product(s) the user belongs ", example = "2")
-    Integer userId;
+    private Long userId;
 
 }

@@ -23,6 +23,6 @@ public class Product implements Serializable {
 
     private String image;
 
-    private Integer userId;
+    private Long userId;
 
 }

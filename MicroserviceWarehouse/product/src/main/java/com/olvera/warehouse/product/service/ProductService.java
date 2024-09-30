@@ -65,7 +65,7 @@ public class ProductService {
     }
 
     @Cacheable(value = PRODUCT_CACHE_LIST)
-    public PageResponse getUsersProducts(Integer userId, int pageNo, int pageSize) {
+    public PageResponse getUsersProducts(Long userId, int pageNo, int pageSize) {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize);
 

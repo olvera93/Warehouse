@@ -7,5 +7,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ProductRepository extends MongoRepository<Product, String> {
 
-    Page<Product> findByUserId(Integer userId, Pageable pageable);
+    Page<Product> findByUserId(Long userId, Pageable pageable);
 }

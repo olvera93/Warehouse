@@ -66,7 +66,7 @@ public class ProductServiceTest extends AbstractServiceTest{
 
     @Test
     public void testGetUsersProducts_UserHasNoProducts() {
-        userId = 1;
+        userId = 1L;
         pageNo = 0;
         pageSize = 10;
 
