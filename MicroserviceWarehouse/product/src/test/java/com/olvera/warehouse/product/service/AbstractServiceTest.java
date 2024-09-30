@@ -15,7 +15,7 @@ public class AbstractServiceTest {
 
     protected ProductResponse productResponse;
 
-    protected Integer userId;
+    protected Long userId;
 
     protected int pageNo;
     protected int pageSize;
@@ -26,7 +26,7 @@ public class AbstractServiceTest {
 
         productId = "JDSI289";
 
-        userId = 2;
+        userId = 2L;
 
         pageNo = 5;
 
@@ -38,7 +38,7 @@ public class AbstractServiceTest {
                 .price(24.32)
                 .discountPercentage(0.0)
                 .image("Pizza")
-                .userId(2)
+                .userId(2L)
                 .build();
 
         product = Product.builder()
@@ -47,7 +47,7 @@ public class AbstractServiceTest {
                 .price(24.32)
                 .discountPercentage(0.0)
                 .image("Pizza")
-                .userId(2)
+                .userId(2L)
                 .build();
 
     }
