@@ -1,6 +1,6 @@
 package com.olvera.warehouse.dto;
 
-import com.olvera.warehouse.model.Role;
+import com.olvera.warehouse.model.AppRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -12,6 +12,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -19,7 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class UserResponse implements Serializable {
 
-    Integer userId;
+    Long userId;
 
     @NotEmpty(message = "Username can not be a null or empty")
     @Schema(name = "username", description = "The user's nickname", example = "Paco234")
@@ -48,6 +50,13 @@ public class UserResponse implements Serializable {
     @Schema(name = "country", description = "The user's country", example = "Mexico")
     String country;
 
-    Role role;
+    private boolean accountNonLocked;
+    private boolean accountNonExpired;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
+    private LocalDate credentialsExpiryDate;
+    private LocalDate accountExpiryDate;
+    private boolean isTwoFactorEnabled;
+    private List<String> roles;
 
 }

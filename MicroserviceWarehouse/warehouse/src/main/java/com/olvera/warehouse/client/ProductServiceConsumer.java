@@ -15,7 +15,7 @@ public class ProductServiceConsumer {
         return productServiceClient.saveProduct(productClientResponse).getBody();
     }
 
-    public PageResponse getUsersProducts(Integer userId, int pageNo, int pageSize ) {
+    public PageResponse getUsersProducts(Long userId, int pageNo, int pageSize ) {
         return productServiceClient.getUsersProducts(userId, pageNo, pageSize).getBody();
     }
 

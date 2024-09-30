@@ -1,8 +1,8 @@
 package com.olvera.warehouse.controller;
 
-import com.olvera.warehouse.dto.AuthResponse;
 import com.olvera.warehouse.dto.ErrorResponse;
 import com.olvera.warehouse.dto.LoginRequest;
+import com.olvera.warehouse.dto.LoginResponse;
 import com.olvera.warehouse.dto.RegisterRequest;
 import com.olvera.warehouse.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +28,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-
     @Operation(
             summary = "SignIn a user",
             description = "You can log in")
@@ -38,8 +37,8 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping(value = "login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.loginUser(request));
     }
 
     @Operation(
@@ -51,7 +50,8 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping(value = "register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authService.register(request));
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
+        authService.registerUser(request);
+        return ResponseEntity.ok("User registered successfully!");
     }
 }

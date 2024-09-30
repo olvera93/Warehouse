@@ -3,6 +3,7 @@ package com.olvera.warehouse.service;
 import com.olvera.warehouse.dto.CartItemResponseClient;
 import com.olvera.warehouse.dto.UserResponse;
 import com.olvera.warehouse.dto.UsersProductResponse;
+import com.olvera.warehouse.model.AppRole;
 import com.olvera.warehouse.model.Role;
 import com.olvera.warehouse.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,7 @@ public class AbstractServiceTest {
 
     protected User user;
 
-    protected Integer userId;
+    protected Long userId;
 
     protected Integer pageNo;
 
@@ -39,6 +40,8 @@ public class AbstractServiceTest {
 
     protected List<UsersProductResponse.ProductClientResponse> products;
 
+    protected List<Role> roles;
+
     protected Map<String, Object> updates = new HashMap<>();
 
     protected User anotherUser = new User();
@@ -46,9 +49,9 @@ public class AbstractServiceTest {
     @BeforeEach
     public void prepare() {
 
-        userId = 3459;
+        userId = 3459L;
 
-        anotherUser.setUserId(999);
+        anotherUser.setUserId(999L);
 
         productId = "JDSI289";
 
@@ -67,7 +70,6 @@ public class AbstractServiceTest {
                 .email("victor2@gmail.com")
                 .mobileNumber("5599330022")
                 .country("Mexico")
-                .role(Role.USER)
                 .build();
 
         user = User.builder()
@@ -77,8 +79,6 @@ public class AbstractServiceTest {
                 .username("Victor23")
                 .email("victor2@gmail.com")
                 .mobileNumber("5599330022")
-                .country("Mexico")
-                .role(Role.USER)
                 .build();
 
         products = new ArrayList<>();
@@ -112,7 +112,6 @@ public class AbstractServiceTest {
                 .email("victor2@gmail.com")
                 .mobileNumber("5599330022")
                 .country("Mexico")
-                .role(Role.USER)
                 .products(products)
                 .build();
 

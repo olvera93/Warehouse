@@ -19,7 +19,7 @@ public interface ProductServiceClient {
 
     @GetMapping("/product/usersProducts")
     public ResponseEntity<PageResponse> getUsersProducts(
-            @RequestParam(value = "userId", defaultValue = "1", required = true)Integer userId,
+            @RequestParam(value = "userId", defaultValue = "1", required = true)Long userId,
             @RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE, required = false) int pageSize
     );

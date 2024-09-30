@@ -26,7 +26,7 @@ import static com.olvera.warehouse.util.AppConstants.DEFAULT_PAGE_NUMBER;
 import static com.olvera.warehouse.util.AppConstants.DEFAULT_PAGE_SIZE;
 
 @RestController
-@RequestMapping(path = "/api/v1", produces = (MediaType.APPLICATION_JSON_VALUE))
+@RequestMapping(path = "/api/v1/auth", produces = (MediaType.APPLICATION_JSON_VALUE))
 @RequiredArgsConstructor
 @CrossOrigin("*")
 @Tag(name = "User", description = "Users API")
@@ -45,7 +45,7 @@ public class UserController {
     })
     @PostMapping(value = "/saveProducts/{userId}")
     public ResponseEntity<UsersProductResponse> saveProduct(
-            @PathVariable(name = "userId", required = true) Integer userId,
+            @PathVariable(name = "userId", required = true) Long userId,
             @RequestBody UsersProductResponse.ProductClientResponse productClientResponse) {
         UsersProductResponse result = userService.saveProducts(userId, productClientResponse);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
@@ -62,7 +62,7 @@ public class UserController {
     @PatchMapping(value = "/users/{userId}")
     public ResponseEntity<UserResponse> updateUser(
             @PathVariable(name = "userId")
-            Integer userId,
+            Long userId,
             @Parameter(name = "updates", description = "Values to be updated", required = true)
             @Valid @RequestBody Map<String, Object> update
     ) {
@@ -80,7 +80,7 @@ public class UserController {
     @GetMapping(value = "/users/{userId}")
     public ResponseEntity<UserResponse> getUserById(
             @PathVariable(name = "userId")
-            Integer userId
+            Long userId
     ) {
         return ResponseEntity.ok(userService.getUserById(userId));
     }
@@ -95,7 +95,7 @@ public class UserController {
     })
     @GetMapping("/usersProducts")
     public ResponseEntity<PageResponse> getUsersProduct(
-            @RequestParam(value = "userId", defaultValue = "1", required = true)Integer userId,
+            @RequestParam(value = "userId", defaultValue = "1", required = true)Long userId,
             @RequestParam(value = "pageNo", defaultValue = DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE, required = false) int pageSize
     ) {
